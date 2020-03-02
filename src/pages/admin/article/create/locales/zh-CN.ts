@@ -1,0 +1,33 @@
+
+export default {
+
+  'article-create.title.required': '请输入标题',
+  'article-create.subtitle.required': '请输入副标题',
+  'article-create.meta_description.required': '请输入摘要',
+  'article-create.category.required': '请选择分类',
+  'article-create.is_original.required': '请选择文章类型',
+  'article-create.tag.required': '请选择标签',
+  'article-create.content.required': '请输入文章内容',
+  'article-create.published_at.required': '请选择发布时间',
+  'article-create.date.required': '请选择起止日期',
+  'article-create.goal.required': '请输入目标描述',
+  'article-create.form.optional': '（选填）',
+  'article-create.form.submit': '提交',
+  'article-create.form.save': '保存',
+  'article-create.title.label': '标   题',
+  'article-create.title.placeholder': '给文章起个名字',
+  'article-create.subtitle.label': '副标题',
+  'article-create.subtitle.placeholder': '文章副标题',
+  'article-create.meta_description.label': '摘 要',
+  'article-create.meta_description.placeholder': '文章摘要',
+  'article-create.category_id.label': '分类',
+  'article-create.category.placeholder': '请选择分类',
+  'article-create.is_original.label': '文章出处',
+  'article-create.original.placeholder': '请选择文章类型',
+  'article-create.tag.label': '标 签',
+  'article-create.tag.placeholder': '文章标签',
+  'article-create.date.label': '起止日期',
+  'article-create.placeholder.start': '开始日期',
+  'article-create.placeholder.end': '结束日期',
+
+};

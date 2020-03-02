@@ -1,0 +1,243 @@
+@import '~antd/es/style/themes/default.less';
+
+@import '~yt-emoji-picker/dist/style.css';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+// topNav
+.ant-pro-top-nav-header-main {
+  position: relative;
+}
+
+// footer
+.ant-pro-global-footer {
+  margin-top: 24px !important;
+}
+
+// nprogress
+body #nprogress {
+  .bar {
+    background-color: @primary-color;
+  }
+
+  .spinner {
+    top: 23px !important;
+  }
+
+  .spinner-icon {
+    border-top-color: @primary-color;
+    border-left-color: @primary-color;
+  }
+}
+
+// simplemde-editor
+.editor-toolbar {
+  line-height: normal;
+}
+
+// emoji
+span.joypixels {
+  margin: -11.6px -12.6px -14px 1.4px;
+  transform: scale(0.5625, 0.5625);
+  transform-origin: left;
+}
+
+.emoji span.joypixels {
+  margin: 0;
+  transform: scale(0.75, 0.75);
+  transform-origin: left;
+}
+
+img.joypixels {
+  width: 18px;
+  height: 18px;
+  margin: -3px .1em 0 .1em;
+}
+
+.emoji img.joypixels {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+}
+
+// highlight
+body .markdown-body,
+body .editor-preview,
+body .editor-preview-active,
+body .editor-preview-side,
+body .editor-preview-active-side {
+  background-color: transparent;
+
+  ul {
+    padding-left: 24px;
+  }
+
+  pre {
+    background-color: #282c34;
+  }
+
+  .line-numbers {
+    code {
+      border: none;
+    }
+
+    .line-numbers-rows {
+      top: -16px;
+      bottom: -16px;
+      padding: 15px 0;
+      border-right: 1px solid rgba(0, 0, 0, .66);
+
+      > span::before {
+        color: hsla(0, 0%, 100%, .3);
+      }
+    }
+  }
+}
+
+body .editor-preview,
+body .editor-preview-active,
+body .editor-preview-side,
+body .editor-preview-active-side {
+  background-color: #fff;
+}
+
+.emoji-dropdown-menu span.joypixels {
+  margin-right: 0;
+}
+
+// 大于1200px
+@media (min-width: @screen-xl) {
+  .ant-pro-grid-content.wide > .ant-page-header {
+    padding: 16px 0;
+  }
+
+  .ant-pro-grid-content.wide > .ant-pro-page-header-wrap-children-content {
+    margin: 24px 0 0 0;
+  }
+
+  .ant-pro-grid-content.wide .ant-page-header-heading-extra {
+    top: 38px;
+    right: 0;
+  }
+}
+
+@media (min-width: @screen-md + 1) and (max-width: @screen-xl) {
+  .ant-pro-top-nav-header-main.wide .ant-pro-top-nav-header-logo {
+    padding-left: 24px;
+  }
+
+  .antd-pro-components-global-header-index-right {
+    padding-right: 12px;
+  }
+}
+
+// 小于768px
+@media (max-width: @screen-md) {
+  body {
+    // table
+    .ant-table {
+      width: 100%;
+      overflow-x: auto;
+
+      &-thead > tr,
+      &-tbody > tr {
+        > th,
+        > td {
+          white-space: pre;
+
+          > span {
+            display: block;
+          }
+        }
+      }
+    }
+
+    // topNav, siderMenu
+    .ant-pro-global-header-logo,
+    .ant-pro-top-nav-header-logo,
+    .ant-pro-sider-menu-logo,
+    .ant-pro-global-header-trigger {
+      padding-left: 12px;
+    }
+
+    .ant-pro-sider-menu-sider {
+      .ant-menu-item, .ant-menu-submenu {
+        padding-left: 12px !important;
+      }
+
+      .ant-menu-submenu .ant-menu-submenu-title {
+        padding-left: 0 !important;
+      }
+    }
+
+    // basicLayout
+    .ant-pro-basicLayout-content {
+      margin: 12px 0;
+    }
+
+    // pageHeader
+    .ant-pro-page-header-wrap-page-header-warp {
+      margin: 12px 24px;
+
+      .ant-page-header {
+        padding: 12px;
+
+        .ant-page-header-heading-extra {
+          right: 12px;
+        }
+      }
+    }
+
+    .ant-pro-page-header-wrap-children-content {
+      margin: 12px 24px 0;
+    }
+
+    .ant-card-head {
+      padding: 0 12px;
+
+      .ant-tabs-nav .ant-tabs-tab {
+        margin-right: 16px;
+      }
+    }
+
+    .ant-card-body {
+      padding: 12px;
+    }
+
+    .ant-form-item-label {
+      padding-bottom: 8px;
+    }
+
+    .ant-pro-global-footer {
+      padding: 0 12px;
+    }
+  }
+}
