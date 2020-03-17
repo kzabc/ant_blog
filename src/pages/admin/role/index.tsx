@@ -1,12 +1,13 @@
-import { Button, Divider, Dropdown, Form, Icon, Menu, message ,Input} from 'antd';
+import { Button, Divider, Dropdown, Form, Icon, Menu, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
+import { IRole } from '@/models/data';
 import { queryRole, updateRole, addRole, removeRole } from './service';
+import { queryMenu } from '@/pages/admin/menu/service';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -18,7 +19,7 @@ const handleAdd = async (fields: FormValueType) => {
   const hide = message.loading('正在添加');
   try {
     await addRole({
-      desc: fields.desc,
+      ...fields,
     });
     hide();
     message.success('添加成功');
@@ -57,7 +58,7 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleRemove = async (selectedRows: IRole[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -77,10 +78,11 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
 const TableList: React.FC<TableListProps> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({})
+  const [stepFormValues, setStepFormValues] = useState({});
   const [KeyWord, setKeyWord] = useState();
+  const [MenusState, setMenusState] = useState([]);
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<IRole>[] = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -122,13 +124,21 @@ const TableList: React.FC<TableListProps> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
+      <ProTable<IRole>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
           <Input.Search placeholder="请输入" onSearch={value => setKeyWord(value)} />,
-          <Button icon="plus" type="primary" onClick={() => handleModalVisible(true)}>
+          <Button
+            icon="plus"
+            type="primary"
+            onClick={async () => {
+              const { data } = await queryMenu({ include: 'children' });
+              setMenusState(data);
+              handleModalVisible(true);
+            }}
+          >
             新建
           </Button>,
 
@@ -145,7 +155,6 @@ const TableList: React.FC<TableListProps> = () => {
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
-
                 </Menu>
               }
             >
@@ -158,11 +167,12 @@ const TableList: React.FC<TableListProps> = () => {
         request={params => queryRole(params)}
         columns={columns}
         rowSelection={{}}
-        params={{KeyWord}}
+        params={{ KeyWord }}
         search={false}
       />
       <CreateForm
         onSubmit={async value => {
+          console.log(value);
           const success = await handleAdd(value);
           if (success) {
             handleModalVisible(false);
@@ -173,6 +183,7 @@ const TableList: React.FC<TableListProps> = () => {
         }}
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
+        menu={MenusState}
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm

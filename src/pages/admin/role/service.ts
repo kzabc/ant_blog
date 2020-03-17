@@ -18,7 +18,7 @@ export async function removeRole(params: { key: number[] }) {
 }
 
 export async function addRole(params: TableListParams) {
-  return request('/api/rule', {
+  return request('/api/admin/roles', {
     method: 'POST',
     data: {
       ...params,

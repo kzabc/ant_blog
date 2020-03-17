@@ -1,13 +1,13 @@
 import request from '@/utils/request';
-import { TableListParams } from './data.d';
+import { IPermissionParams } from '@/models/data';
 
-export async function queryRule(params?: TableListParams) {
+export async function queryPermission(params?: IPermissionParams) {
   return request('/api/admin/permissions', {
     params,
   });
 }
 
-export async function removeRule(params: { key: number[] }) {
+export async function removePermission(params: { key: number[] }) {
   return request('/api/rule', {
     method: 'POST',
     data: {
@@ -17,7 +17,7 @@ export async function removeRule(params: { key: number[] }) {
   });
 }
 
-export async function addRule(params: TableListParams) {
+export async function addPermission(params: IPermissionParams) {
   return request('/api/rule', {
     method: 'POST',
     data: {
@@ -27,7 +27,7 @@ export async function addRule(params: TableListParams) {
   });
 }
 
-export async function updateRule(params: TableListParams) {
+export async function updatePermission(params: IPermissionParams) {
   return request('/api/rule', {
     method: 'POST',
     data: {

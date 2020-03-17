@@ -11,7 +11,8 @@ declare module '*.gif';
 declare module '*.bmp';
 declare module '*.tiff';
 declare module 'omit.js';
-
+declare module 'webpack-theme-color-replacer';
+declare module 'webpack-theme-color-replacer/client';
 // google analytics interface
 interface GAFieldsObject {
   eventCategory: string;

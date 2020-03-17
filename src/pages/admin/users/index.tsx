@@ -1,14 +1,14 @@
-import { Button, Divider, Dropdown, Form, Icon, Menu, message, Avatar, Tag} from 'antd';
+import { Button, Divider, Dropdown, Form, Menu, message, Avatar, Tag } from 'antd';
 import React, { useState, useRef } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
-import styles from "@/components/GlobalHeader/index.less";
-
+import { IUser } from '@/models/data';
+import { queryUsers, updateUsers, addUsers, removeUsers, removeUser, getRolesAll } from './service';
+import styles from '@/components/GlobalHeader/index.less';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 interface TableListProps extends FormComponentProps {}
 
 /**
@@ -18,8 +18,8 @@ interface TableListProps extends FormComponentProps {}
 const handleAdd = async (fields: FormValueType) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({
-      desc: fields.desc,
+    await addUsers({
+      ...fields,
     });
     hide();
     message.success('添加成功');
@@ -35,13 +35,13 @@ const handleAdd = async (fields: FormValueType) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (fields: FormValueType) => {
+const handleUpdate = async (id: number, fields: FormValueType) => {
   const hide = message.loading('正在配置');
+
   try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+    // @ts-ignore
+    await updateUsers(id, {
+      ...fields,
     });
     hide();
 
@@ -58,12 +58,12 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleSelectedRemove = async (selectedRows: IUser[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeRule({
-      key: selectedRows.map(row => row.key),
+    await removeUsers({
+      key: selectedRows.map(row => row.id),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -74,21 +74,34 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
     return false;
   }
 };
-
+const handleRemove = async (id: number) => {
+  const hide = message.loading('正在删除');
+  if (!id) return true;
+  try {
+    await removeUser(id);
+    hide();
+    message.success('删除成功，即将刷新');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('删除失败，请重试');
+    return false;
+  }
+};
 const TableList: React.FC<TableListProps> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [RoleState, setRoleState] = useState([]);
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<IUser>[] = [
     {
       title: '头像',
       dataIndex: 'avatar',
       hideInSearch: true,
       render: text => {
-        return   <Avatar size="small" className={styles.avatar} src={text} alt="avatar" />
+        return <Avatar size="small" className={styles.avatar} src={text} alt="avatar" />;
       },
-
     },
     {
       title: '昵称',
@@ -105,17 +118,10 @@ const TableList: React.FC<TableListProps> = () => {
     {
       title: '角色',
       dataIndex: 'roles',
-      valueEnum: {
-
-      },
+      valueEnum: {},
       render: text => {
         let i = 0;
-        return text.map(value => (
-          <Tag key={i++} >
-            {value.name}
-
-          </Tag>
-        ));
+        return text.map(value => <Tag key={i++}>{value.name}</Tag>);
       },
     },
     {
@@ -125,14 +131,14 @@ const TableList: React.FC<TableListProps> = () => {
       sorter: true,
       renderText: (val: string) => `${val} 次`,
     },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueEnum: {
-        1: { text: '正常', status: 'Success' },
-        2: { text: '拉黑', status: 'error' },
-      },
-    },
+    // {
+    //   title: '状态',
+    //   dataIndex: 'status',
+    //   valueEnum: {
+    //     1: { text: '正常', status: 'Success' },
+    //     2: { text: '拉黑', status: 'error' },
+    //   },
+    // },
     {
       title: '创建时间',
       dataIndex: 'updated_at',
@@ -146,15 +152,23 @@ const TableList: React.FC<TableListProps> = () => {
       render: (_, record) => (
         <>
           <a
-            onClick={() => {
+            onClick={async () => {
               handleUpdateModalVisible(true);
               setStepFormValues(record);
+              const { data } = await getRolesAll();
+              setRoleState(data);
             }}
           >
-            配置
+            编辑
           </a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <a
+            onClick={() => {
+              handleRemove(record.id);
+            }}
+          >
+            删除
+          </a>
         </>
       ),
     },
@@ -162,12 +176,20 @@ const TableList: React.FC<TableListProps> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<TableListItem>
+      <ProTable<IUser>
         headerTitle="查询表格"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
-          <Button icon="plus" type="primary" onClick={() => handleModalVisible(true)}>
+          <Button
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={async () => {
+              handleModalVisible(true);
+              const { data } = await getRolesAll();
+              setRoleState(data);
+            }}
+          >
             新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -176,7 +198,7 @@ const TableList: React.FC<TableListProps> = () => {
                 <Menu
                   onClick={async e => {
                     if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
+                      await handleSelectedRemove(selectedRows);
                       action.reload();
                     }
                   }}
@@ -188,24 +210,28 @@ const TableList: React.FC<TableListProps> = () => {
               }
             >
               <Button>
-                批量操作 <Icon type="down" />
+                批量操作 <DownOutlined />
               </Button>
             </Dropdown>
           ),
         ]}
-        tableAlertRender={(selectedRowKeys, selectedRows) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>
-              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-            </span>
-          </div>
-        )}
-        request={params => queryRule(params)}
+        request={async params => {
+          const {
+            data,
+            meta: { pagination },
+          } = await queryUsers(params);
+          return {
+            data,
+            current: pagination.current_page,
+            pageSize: pagination.per_page,
+            total: pagination.total,
+          };
+        }}
         columns={columns}
         rowSelection={{}}
       />
       <CreateForm
+        roles={RoleState}
         onSubmit={async value => {
           const success = await handleAdd(value);
           if (success) {
@@ -220,8 +246,9 @@ const TableList: React.FC<TableListProps> = () => {
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
-          onSubmit={async value => {
-            const success = await handleUpdate(value);
+          roles={RoleState}
+          onSubmit={async (id, value) => {
+            const success = await handleUpdate(id, value);
             if (success) {
               handleModalVisible(false);
               setStepFormValues({});

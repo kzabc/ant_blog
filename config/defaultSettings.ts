@@ -45,7 +45,7 @@ export interface DefaultSettings {
 export default {
   navTheme: 'dark',
   // 拂晓蓝
-  primaryColor: 'daybreak',
+  primaryColor: '#13C2C2',
   layout: 'sidemenu',
   contentWidth: 'Fluid',
   fixedHeader: false,
@@ -55,7 +55,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: '呼吸的blog',
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;

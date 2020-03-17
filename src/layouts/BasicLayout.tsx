@@ -10,17 +10,17 @@ import ProLayout, {
   Settings,
   DefaultFooter,
 } from '@ant-design/pro-layout';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { BackTop ,Icon, Result, Button } from 'antd';
+import { BackTop, Icon, Result, Button } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
-import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
+import { getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 
 const noMatch = (
@@ -128,7 +128,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
       dispatch({
         type: 'global/getMenuData', // 获取菜单
-        callback: (res:any) => {
+        payload: { include: 'children' },
+        callback: (res: any) => {
           setMenuData(res.data);
         },
       });
@@ -185,7 +186,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         );
       }}
       footerRender={footerRender}
-      menuDataRender={menuDataRender}
+      menuDataRender={() => menuData}
       formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
@@ -193,9 +194,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     >
       <Authorized authority={authorized!.authority} noMatch={noMatch}>
         {children}
-
       </Authorized>
-
     </ProLayout>
   );
 };

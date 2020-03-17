@@ -1,16 +1,22 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Button, Divider, Dropdown, Menu, message ,Input} from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
+// eslint-disable-next-line import/named
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { queryCategory, updateCategory, addCategory, removeCategory ,removeCategorys} from './service';
-import {ICategory, ITag} from "@/models/data";
-
+import {
+  queryCategory,
+  updateCategory,
+  addCategory,
+  removeCategory,
+  removeCategorys,
+} from './service';
+import { ICategory, ITag } from '@/models/data';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -38,10 +44,10 @@ const handleAdd = async (fields: FormValueType) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (id:number ,fields: FormValueType) => {
+const handleUpdate = async (id: number, fields: FormValueType) => {
   const hide = message.loading('正在配置');
   try {
-    await updateCategory(id,{
+    await updateCategory(id, {
       name: fields.name,
     });
     hide();
@@ -77,8 +83,7 @@ const handleSelectedRemove = async (selectedRows: ITag[]) => {
   }
 };
 
-
-const handleRemove = async (id:number) => {
+const handleRemove = async (id: number) => {
   const hide = message.loading('正在删除');
   if (!id) return true;
   try {
@@ -99,6 +104,7 @@ const TableList: React.FC<TableListProps> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [KeyWord, setKeyWord] = useState();
   const actionRef = useRef<ActionType>();
+  // @ts-ignore
   const columns: ProColumns<ICategory>[] = [
     {
       title: 'ID',
@@ -108,7 +114,6 @@ const TableList: React.FC<TableListProps> = () => {
       title: '分类名称',
       dataIndex: 'name',
     },
-
 
     {
       title: '更新时间',
@@ -131,9 +136,13 @@ const TableList: React.FC<TableListProps> = () => {
             编辑
           </a>
           <Divider type="vertical" />
-          <a onClick={()=>{
-            handleRemove(record.id)
-          }} >删除</a>
+          <a
+            onClick={() => {
+              handleRemove(record.id);
+            }}
+          >
+            删除
+          </a>
         </>
       ),
     },
@@ -174,11 +183,10 @@ const TableList: React.FC<TableListProps> = () => {
             </Dropdown>
           ),
         ]}
-
         request={params => queryCategory(params)}
         columns={columns}
         rowSelection={{}}
-        params={{KeyWord}}
+        params={{ KeyWord }}
         search={false}
       />
       <CreateForm
@@ -196,8 +204,8 @@ const TableList: React.FC<TableListProps> = () => {
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
-          onSubmit={async (id,value) => {
-            const success = await handleUpdate(id,value);
+          onSubmit={async (id, value) => {
+            const success = await handleUpdate(id, value);
             if (success) {
               handleModalVisible(false);
               setStepFormValues({});

@@ -26,6 +26,7 @@ export default {
   'menu.article.list.draft': '文章列表（草稿箱）',
   'menu.article.tag': '标签管理',
   'menu.article.category': '分类管理',
+  'menu.project': '项目',
   'menu.system': '系统设置',
   'menu.system.user': '用户管理',
   'menu.system.role': '角色管理',

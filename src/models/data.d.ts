@@ -99,6 +99,7 @@ export interface IContent {
 }
 
 export interface ICategory {
+  email: any;
   id?: number;
   name?: string;
   slug?: string;
@@ -109,9 +110,8 @@ export interface ICategory {
 export interface ICategoryParams {
   id?: number;
   name?: string;
-  sorter?: string;
+  sort?: string;
   status?: string;
-  name?: string;
   pageSize?: number;
   currentPage?: number;
 }
@@ -124,12 +124,11 @@ export interface ITag {
   created_at?: string;
   updated_at?: string;
 }
-export interface ITagParams  {
+export interface ITagParams {
   id?: number;
   name?: string;
-  sorter?: string;
+  sort?: string;
   status?: string;
-  name?: string;
   pageSize?: number;
   currentPage?: number;
 }
@@ -163,7 +162,34 @@ export interface IPermission {
   created_at?: string;
   updated_at?: string;
 }
+export interface IPermissionParams {
+  name?: string;
+  pageSize?: number;
+  currentPage?: number;
+}
 
+export interface IMenu {
+  id?: number;
+  name?: string;
+  guard_name?: string;
+  icon?: string;
+  pid?: number;
+  sort?: number;
+  path?: string;
+  show?: number;
+  status?: number;
+  created_at?: string;
+  updated_at?: string;
+  children?: IMenu[];
+}
+export interface IMenuParams {
+  id?: number;
+  name?: string;
+  sort?: string;
+  status?: string;
+  pageSize?: number;
+  currentPage?: number;
+}
 export interface IFollowable {
   user_id?: number;
   followable_type?: string;

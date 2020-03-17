@@ -1,8 +1,9 @@
 import { IConfig, IPlugin } from 'umi-types';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
+import webpackPlugin from './plugin.config';
 import slash from 'slash2';
-const { pwa } = defaultSettings;
+const { pwa, primaryColor } = defaultSettings;
 const plugins: IPlugin[] = [
   [
     'umi-plugin-react',
@@ -85,7 +86,7 @@ export default {
                 {
                   name: 'list',
                   path: 'list',
-                  hideChildrenInMenu: true,
+
                   component: './admin/article/list',
                   routes: [
                     {
@@ -177,10 +178,17 @@ export default {
               path: 'system',
               name: 'system',
               icon: 'setting',
-              routes: [],
+              routes: [
+                {
+                  name: '查询表格',
+                  icon: 'smile',
+                  path: '/admin/system/menu',
+                  component: './admin/menu',
+                },
+              ],
             },
             {
-              name: '标准列表',
+              name: 'project',
               icon: 'smile',
               path: '/admin/admin/project',
               component: './admin/project',
@@ -307,7 +315,7 @@ export default {
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
-    // ...darkTheme,
+    'primary-color': primaryColor,
   },
   define: {
     API_URL: '/api/',
@@ -329,7 +337,7 @@ export default {
         resourcePath: string;
       },
       _: string,
-      localName: string
+      localName: string,
     ) => {
       if (
         context.resourcePath.includes('node_modules') ||
@@ -356,14 +364,14 @@ export default {
   manifest: {
     basePath: '/',
   },
-  // chainWebpack: webpackPlugin,
+  chainWebpack: webpackPlugin,
   proxy: {
     '/api/': {
-      target: 'http://api.kzabc.com',
+      target: 'http://test.kzabc.com',
       changeOrigin: true,
       // pathRewrite: {
-      //   '^/api': '',
-      // },
+      //    '^/api': '',
+      //  },
     },
   },
   extraBabelPlugins: [

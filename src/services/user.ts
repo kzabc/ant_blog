@@ -12,6 +12,8 @@ export async function queryNotices(): Promise<any> {
   return request('/api/notices');
 }
 // 获取权限菜单
-export async function getAccountMenus() {
-  return request('/api/menus');
+export async function getAccountMenus(params: { include: string }) {
+  return request('/api/common/menus', {
+    params,
+  });
 }

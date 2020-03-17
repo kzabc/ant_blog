@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import { Subscription, Effect } from 'dva';
 
 import { NoticeIconData } from '@/components/NoticeIcon';
-import { queryNotices, getAccountMenus} from '@/services/user';
+import { queryNotices, getAccountMenus } from '@/services/user';
 import { ConnectState } from './connect.d';
 
 export interface NoticeItem extends NoticeIconData {
@@ -101,12 +101,12 @@ const GlobalModel: GlobalModelType = {
       });
     },
     *getMenuData({ payload, callback }, { put, call }) {
-      const response = yield call(getAccountMenus);
+      const response = yield call(getAccountMenus, payload);
       if (response.status === 'success') {
         const menuData = response.data;
         yield put({
           type: 'save',
-          payload: { menuData: menuData },
+          payload: { menuData },
         });
       }
 
@@ -114,7 +114,6 @@ const GlobalModel: GlobalModelType = {
         callback(response); // 返回结果
       }
     },
-
   },
 
   reducers: {

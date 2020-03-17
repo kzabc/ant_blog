@@ -1,12 +1,16 @@
-import { Divider, Form, Input, message } from 'antd';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
 import React, { useState, useRef } from 'react';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { IPermission } from '@/models/data';
-import { queryPermission, updatePermission, addPermission, removePermission } from './service';
+import { IMenu } from '@/models/data';
+import { queryMenu, updateMenu, addMenu, removeMenu } from './service';
+import { queryPermission } from '@/pages/admin/permission/service';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -17,8 +21,8 @@ interface TableListProps extends FormComponentProps {}
 const handleAdd = async (fields: FormValueType) => {
   const hide = message.loading('正在添加');
   try {
-    await addPermission({
-      name: fields.name,
+    await addMenu({
+      ...fields,
     });
     hide();
     message.success('添加成功');
@@ -37,8 +41,10 @@ const handleAdd = async (fields: FormValueType) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在配置');
   try {
-    await updatePermission({
+    await updateMenu({
       name: fields.name,
+      desc: fields.desc,
+      key: fields.key,
     });
     hide();
 
@@ -55,11 +61,11 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: IPermission[]) => {
+const handleRemove = async (selectedRows: IMenu[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removePermission({
+    await removeMenu({
       key: selectedRows.map(row => row.key),
     });
     hide();
@@ -76,26 +82,39 @@ const TableList: React.FC<TableListProps> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
-  const [KeyWord, setKeyWord] = useState();
+  const [PermissionState, setPermissionState] = useState([]);
+  const [MenusState, setMenusState] = useState([]);
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<IPermission>[] = [
+  const columns: ProColumns<IMenu>[] = [
     {
       title: 'ID',
       dataIndex: 'id',
+      key: 'id',
     },
     {
-      title: '名称',
+      title: '名字',
       dataIndex: 'name',
     },
-    {
-      title: '守护名称',
-      dataIndex: 'guard_name',
-    },
+    // {
+    //   title: '图标',
+    //   dataIndex: 'desc',
+    // },
+    // {
+    //   title: '路由',
+    //   dataIndex: '',
+    // },
+    // {
+    //   title: '显示',
+    //   dataIndex: '',
+    // },
+    // {
+    //   title: '状态',
+    //   dataIndex: '',
+    // },
+
     {
       title: '创建时间',
-      dataIndex: 'created_at',
-      sorter: true,
-      valueType: 'dateTime',
+      dataIndex: 'updated_at',
     },
     {
       title: '操作',
@@ -112,7 +131,7 @@ const TableList: React.FC<TableListProps> = () => {
             配置
           </a>
           <Divider type="vertical" />
-          <a href="">删除</a>
+          <a href="">订阅警报</a>
         </>
       ),
     },
@@ -120,21 +139,54 @@ const TableList: React.FC<TableListProps> = () => {
 
   return (
     <PageHeaderWrapper>
-      <ProTable<IPermission>
+      <ProTable<IMenu>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
-        toolBarRender={() => [
-          <Input.Search placeholder="请输入" onSearch={value => setKeyWord(value)} />,
+        search={false}
+        params={{ include: 'children' }}
+        toolBarRender={(action, { selectedRows }) => [
+          <Button
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={async () => {
+              handleModalVisible(true);
+              const { data: permission } = await queryPermission();
+              setPermissionState(permission);
+            }}
+          >
+            新建
+          </Button>,
+          selectedRows && selectedRows.length > 0 && (
+            <Dropdown
+              overlay={
+                <Menu
+                  onClick={async e => {
+                    if (e.key === 'remove') {
+                      await handleRemove(selectedRows);
+                      action.reload();
+                    }
+                  }}
+                  selectedKeys={[]}
+                >
+                  <Menu.Item key="remove">批量删除</Menu.Item>
+                  <Menu.Item key="approval">批量审批</Menu.Item>
+                </Menu>
+              }
+            >
+              <Button>
+                批量操作 <DownOutlined />
+              </Button>
+            </Dropdown>
+          ),
         ]}
-        request={params => queryPermission(params)}
+        request={async params => {
+          const { data } = await queryMenu(params);
+          setMenusState(data);
+          return { data };
+        }}
         columns={columns}
         rowSelection={{}}
-        params={{ KeyWord }}
-        pagination={{
-          showSizeChanger: true,
-        }}
-        search={false}
       />
       <CreateForm
         onSubmit={async value => {
@@ -148,6 +200,8 @@ const TableList: React.FC<TableListProps> = () => {
         }}
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
+        permission={PermissionState}
+        menu={MenusState}
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm

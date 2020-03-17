@@ -1,4 +1,4 @@
-import { Icon, Tooltip } from 'antd';
+import { Icon } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -6,7 +6,6 @@ import { ConnectProps, ConnectState } from '@/models/connect';
 
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
-import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
@@ -30,18 +29,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         placeholder={formatMessage({
           id: 'component.globalHeader.search',
         })}
-        defaultValue="umi ui"
-        dataSource={[
-          formatMessage({
-            id: 'component.globalHeader.search.example1',
-          }),
-          formatMessage({
-            id: 'component.globalHeader.search.example2',
-          }),
-          formatMessage({
-            id: 'component.globalHeader.search.example3',
-          }),
-        ]}
+        defaultValue="Hello World"
         onSearch={value => {
           console.log('input', value);
         }}
@@ -49,22 +37,15 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
           console.log('enter', value);
         }}
       />
-      <Tooltip
-        title={formatMessage({
-          id: 'component.globalHeader.help',
-        })}
-      >
-        <a
-          target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
-          rel="noopener noreferrer"
-          className={styles.action}
-        >
-          <Icon type="question-circle-o" />
-        </a>
-      </Tooltip>
       <Avatar />
-      <SelectLang className={styles.action} />
+      <a
+        className={styles.action}
+        href="https://github.com/kzabc"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Icon type="github" className={styles.github} />
+      </a>
     </div>
   );
 };

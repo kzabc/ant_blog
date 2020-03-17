@@ -1,28 +1,26 @@
 @import '~antd/es/style/themes/default.less';
 @import '~rc-banner-anim/assets/index.css';
-.ant-card-body{
+.ant-card-body {
   padding: 0;
 }
-:global{
-
+:global {
   .banner-anim {
-    height:360px;
+    height: 360px;
   }
-
-  .banner-user-elem{
+  .banner-user-elem {
     text-align: center;
     color: #fff;
     position: relative;
     overflow: hidden;
   }
-  .banner-user-elem .banner-user-title{
+  .banner-user-elem .banner-user-title {
     font-size: 32px;
     top: 40%;
   }
-  .banner-user-elem .banner-user-text{
+  .banner-user-elem .banner-user-text {
     top: 40%;
   }
-  .banner-anim-elem .bg{
+  .banner-anim-elem .bg {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -30,20 +28,19 @@
     left: 0;
     overflow: hidden;
   }
-  .ant-col{
+  .ant-col {
     padding: 0;
   }
-  .ant-list-vertical .ant-list-item-meta{
+  .ant-list-vertical .ant-list-item-meta {
     margin-bottom: 0px;
   }
 }
 
 a.listItemMetaTitle {
   color: @heading-color;
-
 }
-.ant-list-item-meta{
-  margin-bottom:1000px ;
+.ant-list-item-meta {
+  margin-bottom: 1000px;
 }
 .listItemExtra {
   width: 272px;
@@ -65,11 +62,20 @@ a.listItemMetaTitle {
 .selfTrigger {
   margin-left: 12px;
 }
-.list :global(.ant-list-item-meta){
-  margin-bottom:10px ;
+.list :global(.ant-list-item-meta) {
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: @screen-xs) {
+  .selfTrigger {
+    display: block;
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: @screen-sm) {
+  :global(.banner-anim) {
+    height: 160px;
+  }
   .selfTrigger {
     display: block;
     margin-left: 0;
