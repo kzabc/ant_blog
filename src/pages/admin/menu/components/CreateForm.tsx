@@ -1,7 +1,7 @@
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Modal, Switch, Select, TreeSelect } from 'antd';
-
+const { TreeNode } = TreeSelect;
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import React from 'react';
 import { IMenu, IPermission } from '@/models/data';
@@ -32,7 +32,6 @@ const CreateForm: React.FC<CreateFormProps> = props => {
       handleAdd(fieldsValue);
     });
   };
-
   // @ts-ignore
   return (
     <Modal
@@ -50,6 +49,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="父菜单">
         {form.getFieldDecorator('pid', {
           rules: [{ required: true, message: '请选择父菜单' }],
+          initialValue: 0,
         })(
           <TreeSelect
             treeNodeFilterProp="id"

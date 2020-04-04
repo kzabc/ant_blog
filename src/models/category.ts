@@ -1,8 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryCategoryAll } from '@/services/category';
-import {ICategory} from "@/models/data";
-
+import { queryCategoryAll } from '@/services/common';
+import { ICategory } from '@/models/data';
 
 export interface StateType {
   list: ICategory[];
@@ -41,23 +40,23 @@ const CategoryModel: CategoryModel = {
   namespace: 'categoryAll',
 
   state: {
-    list:[],
+    list: [],
   },
   effects: {
     *fetch(_, { call, put }) {
       const { data: list } = yield call(queryCategoryAll);
       yield put({
         type: 'saveCategory',
-        payload: {list},
+        payload: { list },
       });
     },
   },
 
   reducers: {
-    saveCategory(state, {payload}) {
+    saveCategory(state, { payload }) {
       return {
         ...state,
-       ...payload,
+        ...payload,
       };
     },
   },

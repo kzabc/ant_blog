@@ -1,5 +1,6 @@
-import { Divider, Form, Input, message } from 'antd';
+import { Divider, Form, Input, message, Button } from 'antd';
 import React, { useState, useRef } from 'react';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -126,8 +127,28 @@ const TableList: React.FC<TableListProps> = () => {
         rowKey="id"
         toolBarRender={() => [
           <Input.Search placeholder="请输入" onSearch={value => setKeyWord(value)} />,
+          <Button
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={async () => {
+              handleModalVisible(true);
+            }}
+          >
+            新建
+          </Button>,
         ]}
-        request={params => queryPermission(params)}
+        request={async params => {
+          const {
+            data,
+            meta: { pagination },
+          } = await queryPermission(params);
+          return {
+            data,
+            current: pagination.current_page,
+            pageSize: pagination.per_page,
+            total: pagination.total,
+          };
+        }}
         columns={columns}
         rowSelection={{}}
         params={{ KeyWord }}

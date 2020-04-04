@@ -15,7 +15,10 @@ export interface ArticleCommentsProps {
   onPageChange: (page: number, pageSize?: number) => void;
   onFetchMoreChildrenComments: (comment_id: number) => void;
   loading: boolean;
-  onSubmitComment: (values: { content: { markdown: string }, parent_id: number }, callback?: () => void) => void;
+  onSubmitComment: (
+    values: { content: { markdown: string }; parent_id: number },
+    callback?: () => void,
+  ) => void;
   submittingComment: boolean;
   topComment?: number;
 }
@@ -29,12 +32,15 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
     parent_id: 0,
   };
 
-  handleSubmitComment = (values: { content: { markdown: string }, parent_id?: number }, callback?: () => void) => {
-    this.props.onSubmitComment({ ...values, parent_id: values.parent_id || 0, }, callback);
+  handleSubmitComment = (
+    values: { content: { markdown: string }; parent_id?: number },
+    callback?: () => void,
+  ) => {
+    this.props.onSubmitComment({ ...values, parent_id: values.parent_id || 0 }, callback);
   };
 
   handleCommentClick = (comment: IComment) => {
-    const parent_id = this.state.parent_id === comment.id ? 0 : comment.id as number;
+    const parent_id = this.state.parent_id === comment.id ? 0 : (comment.id as number);
     this.setState({ parent_id });
   };
 
@@ -67,7 +73,7 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
 
       return (
         <Editor
-          placeholder={`@${get(comment, 'user.username')}`}
+          placeholder={`@${get(comment, 'user.nickname')}`}
           onSubmit={(values: { content: { markdown: string } }, callback?: () => void) => {
             this.handleSubmitComment({ ...values, parent_id: this.state.parent_id }, () => {
               this.setState({ parent_id: 0 }, callback);
@@ -83,45 +89,58 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
     return (
       <>
         {parentComment.id === this.state.parent_id && <NestedEditor comment={parentComment} />}
-        {parentComment.children && parentComment.children.map((comment: IComment) => (
-          <div
-            key={comment.id}
-            id={`comment-${comment.id}`}
-            className={this.props.topComment === comment.id ? styles.topComment : ''}
-          >
-            <Comment
-              author={
-                <span>
-                  {get(comment, 'user.username')}
-                  {this.props.article.user_id === comment.user_id && <Tag>博主</Tag>}
-                  {parentComment.user_id === comment.user_id && <Tag>楼主</Tag>}
-                </span>
-              }
-              avatar={get(comment, 'user.avatar')}
-              content={<MarkdownBody markdown={get(comment, 'content.combine_markdown')} />}
-              datetime={
-                <Tooltip title={comment.created_at}>
-                  <span>{comment.created_at_timeago}</span>
-                </Tooltip>
-              }
-              actions={[
-                <span><Upvote relation="comment" item={comment} /></span>,
-                <span><DownvoteBtn relation="comment" item={comment} /></span>,
-                <span onClick={() => this.handleCommentClick(comment)}>
-                  <Icon type="message" /> 回复
-                </span>,
-              ]}
-            />
-            {comment.id === this.state.parent_id && <NestedEditor comment={comment} />}
-          </div>
-        ))}
+        {parentComment.children &&
+          parentComment.children.map((comment: IComment) => (
+            <div
+              key={comment.id}
+              id={`comment-${comment.id}`}
+              className={this.props.topComment === comment.id ? styles.topComment : ''}
+            >
+              <Comment
+                author={
+                  <span>
+                    {get(comment, 'user.nickname')}
+                    {this.props.article.user_id === comment.user_id && <Tag>博主</Tag>}
+                    {parentComment.user_id === comment.user_id && <Tag>楼主</Tag>}
+                  </span>
+                }
+                avatar={get(comment, 'user.avatar')}
+                content={<MarkdownBody markdown={get(comment, 'content.combine_markdown')} />}
+                datetime={
+                  <Tooltip title={comment.created_at}>
+                    <span>{comment.created_at_timeago}</span>
+                  </Tooltip>
+                }
+                actions={[
+                  <span>
+                    <Upvote relation="comment" item={comment} />
+                  </span>,
+                  <span>
+                    <DownvoteBtn relation="comment" item={comment} />
+                  </span>,
+                  <span onClick={() => this.handleCommentClick(comment)}>
+                    <Icon type="message" /> 回复
+                  </span>,
+                ]}
+              />
+              {comment.id === this.state.parent_id && <NestedEditor comment={comment} />}
+            </div>
+          ))}
         {this.renderLoadMoreReplysBtn(parentComment)}
       </>
     );
   };
 
-  render () {
-    const { article, comments, meta, onPageChange, loading, submittingComment, topComment } = this.props;
+  render() {
+    const {
+      article,
+      comments,
+      meta,
+      onPageChange,
+      loading,
+      submittingComment,
+      topComment,
+    } = this.props;
 
     return (
       <div className={styles.comments}>
@@ -129,7 +148,10 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
           onSubmit={this.handleSubmitComment}
           submitting={submittingComment}
           preview
-          defaultMentionUsers={unionBy(comments.map(comment => comment.user), 'id')}
+          defaultMentionUsers={unionBy(
+            comments.map(comment => comment.user),
+            'id',
+          )}
         />
         <List
           className={styles.list}
@@ -152,7 +174,7 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
               <Comment
                 author={
                   <span>
-                    {get(comment, 'user.username')}
+                    {get(comment, 'user.nickname')}
                     {article.user_id === comment.user_id && <Tag>博主</Tag>}
                   </span>
                 }
@@ -164,8 +186,12 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
                   </Tooltip>
                 }
                 actions={[
-                  <span><Upvote relation="comment" item={comment} /></span>,
-                  <span><DownvoteBtn relation="comment" item={comment} /></span>,
+                  <span>
+                    <Upvote relation="comment" item={comment} />
+                  </span>,
+                  <span>
+                    <DownvoteBtn relation="comment" item={comment} />
+                  </span>,
                   <span onClick={() => this.handleCommentClick(comment)}>
                     <Icon type="message" /> 评论
                   </span>,
@@ -174,8 +200,7 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
               />
             </List.Item>
           )}
-        >
-        </List>
+        ></List>
       </div>
     );
   }

@@ -10,7 +10,7 @@ import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { IMenu } from '@/models/data';
 import { queryMenu, updateMenu, addMenu, removeMenu } from './service';
-import { queryPermission } from '@/pages/admin/permission/service';
+import { queryPermissionAll } from '@/services/common';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -95,23 +95,6 @@ const TableList: React.FC<TableListProps> = () => {
       title: '名字',
       dataIndex: 'name',
     },
-    // {
-    //   title: '图标',
-    //   dataIndex: 'desc',
-    // },
-    // {
-    //   title: '路由',
-    //   dataIndex: '',
-    // },
-    // {
-    //   title: '显示',
-    //   dataIndex: '',
-    // },
-    // {
-    //   title: '状态',
-    //   dataIndex: '',
-    // },
-
     {
       title: '创建时间',
       dataIndex: 'updated_at',
@@ -151,7 +134,7 @@ const TableList: React.FC<TableListProps> = () => {
             type="primary"
             onClick={async () => {
               handleModalVisible(true);
-              const { data: permission } = await queryPermission();
+              const { data: permission } = await queryPermissionAll();
               setPermissionState(permission);
             }}
           >

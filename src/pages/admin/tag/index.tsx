@@ -1,7 +1,7 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Button, Divider, Dropdown, Menu, message,Input } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -9,8 +9,8 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { ITag } from '@/models/data';
-import {queryTag, updateTag, addTag, removeTag, removeTags} from './service';
-
+import { queryTag, updateTag, addTag, removeTag, removeTags } from './service';
+import { queryRole } from '@/pages/admin/role/service';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -24,7 +24,6 @@ const handleAdd = async (fields: FormValueType) => {
     await addTag({
       name: fields.name,
       order: fields.order,
-
     });
     hide();
     message.success('添加成功');
@@ -40,10 +39,10 @@ const handleAdd = async (fields: FormValueType) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (id:number,fields: FormValueType) => {
+const handleUpdate = async (id: number, fields: FormValueType) => {
   const hide = message.loading('正在配置');
   try {
-    await updateTag(id,{
+    await updateTag(id, {
       name: fields.name,
       order: fields.order,
       sulg: fields.sulg,
@@ -80,8 +79,7 @@ const handleSelectedRemove = async (selectedRows: ITag[]) => {
   }
 };
 
-const handleRemove = async (id :number ) =>{
-
+const handleRemove = async (id: number) => {
   const hide = message.loading('正在删除');
   if (!id) return true;
   try {
@@ -94,8 +92,7 @@ const handleRemove = async (id :number ) =>{
     message.error('删除失败，请重试');
     return false;
   }
-
-}
+};
 
 const TableList: React.FC<TableListProps> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
@@ -137,14 +134,17 @@ const TableList: React.FC<TableListProps> = () => {
             编辑
           </a>
           <Divider type="vertical" />
-          <a onClick={()=>{
-            handleRemove(record.id)
-          }} >删除</a>
+          <a
+            onClick={() => {
+              handleRemove(record.id);
+            }}
+          >
+            删除
+          </a>
         </>
       ),
     },
   ];
-
 
   return (
     <PageHeaderWrapper>
@@ -180,11 +180,21 @@ const TableList: React.FC<TableListProps> = () => {
             </Dropdown>
           ),
         ]}
-
-        request={params => queryTag(params)}
+        request={async params => {
+          const {
+            data,
+            meta: { pagination },
+          } = await queryTag(params);
+          return {
+            data,
+            current: pagination.current_page,
+            pageSize: pagination.per_page,
+            total: pagination.total,
+          };
+        }}
         columns={columns}
         rowSelection={{}}
-        params={{KeyWord}}
+        params={{ KeyWord }}
         search={false}
       />
       <CreateForm
@@ -202,8 +212,8 @@ const TableList: React.FC<TableListProps> = () => {
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
-          onSubmit={async (id,value) => {
-            const success = await handleUpdate(id,value);
+          onSubmit={async (id, value) => {
+            const success = await handleUpdate(id, value);
             if (success) {
               handleModalVisible(false);
               setStepFormValues({});

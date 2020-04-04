@@ -8,6 +8,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { IRole } from '@/models/data';
 import { queryRole, updateRole, addRole, removeRole } from './service';
 import { queryMenu } from '@/pages/admin/menu/service';
+import { queryPermission } from '@/pages/admin/permission/service';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -164,7 +165,18 @@ const TableList: React.FC<TableListProps> = () => {
             </Dropdown>
           ),
         ]}
-        request={params => queryRole(params)}
+        request={async params => {
+          const {
+            data,
+            meta: { pagination },
+          } = await queryRole(params);
+          return {
+            data,
+            current: pagination.current_page,
+            pageSize: pagination.per_page,
+            total: pagination.total,
+          };
+        }}
         columns={columns}
         rowSelection={{}}
         params={{ KeyWord }}

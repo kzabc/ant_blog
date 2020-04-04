@@ -8,7 +8,7 @@ export async function queryPermission(params?: IPermissionParams) {
 }
 
 export async function removePermission(params: { key: number[] }) {
-  return request('/api/rule', {
+  return request('/api/admin/permissions', {
     method: 'POST',
     data: {
       ...params,
@@ -18,7 +18,7 @@ export async function removePermission(params: { key: number[] }) {
 }
 
 export async function addPermission(params: IPermissionParams) {
-  return request('/api/rule', {
+  return request('/api/admin/permissions', {
     method: 'POST',
     data: {
       ...params,
@@ -28,7 +28,7 @@ export async function addPermission(params: IPermissionParams) {
 }
 
 export async function updatePermission(params: IPermissionParams) {
-  return request('/api/rule', {
+  return request('/api/admin/permissions', {
     method: 'POST',
     data: {
       ...params,

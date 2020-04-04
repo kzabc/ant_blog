@@ -25,6 +25,7 @@ const plugins: IPlugin[] = [
         webpackChunkName: true,
         level: 3,
       },
+      chunks: ['vendors', 'umi'],
       pwa: pwa
         ? {
             workboxPluginMode: 'InjectManifest',
@@ -86,7 +87,7 @@ export default {
                 {
                   name: 'list',
                   path: 'list',
-
+                  hideChildrenInMenu: true,
                   component: './admin/article/list',
                   routes: [
                     {

@@ -51,7 +51,7 @@ export default (config: any) => {
 
   // optimize chunks
   config.optimization
-  // share the same chunks across different modules
+    // share the same chunks across different modules
     .runtimeChunk(false)
     .splitChunks({
       chunks: 'async',
@@ -76,6 +76,27 @@ export default (config: any) => {
             }
             return 'misc';
           },
+        },
+        icons: {
+          name: 'icons',
+          test({ resource }) {
+            return /@ant-design/.test(resource);
+          },
+          priority: 20,
+        },
+        emoji: {
+          name: 'emoji',
+          test({ resource }) {
+            return /@emoji-toolkit/.test(resource);
+          },
+          priority: 20,
+        },
+        antd: {
+          name: 'antd',
+          test({ resource }) {
+            return /@antd/.test(resource);
+          },
+          priority: 20,
         },
       },
     });

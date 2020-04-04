@@ -23,14 +23,14 @@ const CreateForm: React.FC<CreateFormProps> = props => {
   return (
     <Modal
       destroyOnClose
-      title="新建规则"
+      title="新建权限"
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => onCancel()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="描述">
-        {form.getFieldDecorator('desc', {
-          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="权限">
+        {form.getFieldDecorator('name', {
+          rules: [{ required: true, message: '请输入权限规则！', min: 5 }],
         })(<Input placeholder="请输入" />)}
       </FormItem>
     </Modal>
