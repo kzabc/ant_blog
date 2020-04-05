@@ -1,7 +1,10 @@
-import { Button, Divider, Dropdown, Form, Icon, Menu, message,Tag, Avatar} from 'antd';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Divider, Dropdown, Menu, message, Tag, Avatar } from 'antd';
 import React, { useRef } from 'react';
 import { Link } from 'umi';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { GridContent } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data.d';
@@ -101,7 +104,7 @@ const TableList: React.FC<TableListProps> = () => {
           <Dropdown overlay={operation(record)}>
             <a className="ant-dropdown-link" href="#">
               更多
-              <Icon type="down"/>
+              <DownOutlined />
             </a>
           </Dropdown>
         </>
@@ -117,7 +120,7 @@ const TableList: React.FC<TableListProps> = () => {
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
           <Link to="/admin/article/create">
-          <Button icon="plus" type="primary">
+          <Button icon={<PlusOutlined />} type="primary">
             新建
           </Button>
           </Link>,
@@ -138,7 +141,7 @@ const TableList: React.FC<TableListProps> = () => {
               }
             >
               <Button>
-                批量操作 <Icon type="down" />
+                批量操作 <DownOutlined />
               </Button>
             </Dropdown>
           ),

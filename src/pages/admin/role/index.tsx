@@ -1,6 +1,9 @@
-import { Button, Divider, Dropdown, Form, Icon, Menu, message, Input } from 'antd';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
@@ -131,7 +134,7 @@ const TableList: React.FC<TableListProps> = () => {
         toolBarRender={(action, { selectedRows }) => [
           <Input.Search placeholder="请输入" onSearch={value => setKeyWord(value)} />,
           <Button
-            icon="plus"
+            icon={<PlusOutlined />}
             type="primary"
             onClick={async () => {
               const { data } = await queryMenu({ include: 'children' });
@@ -159,7 +162,7 @@ const TableList: React.FC<TableListProps> = () => {
               }
             >
               <Button>
-                批量操作 <Icon type="down" />
+                批量操作 <DownOutlined />
               </Button>
             </Dropdown>
           ),

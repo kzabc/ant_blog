@@ -1,9 +1,11 @@
-import { Card, Col, Form, Icon, List, Row, Tag ,Menu, Layout ,Tooltip} from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Col, List, Row, Tag, Menu, Layout, Tooltip } from 'antd';
 import React, { Component } from 'react'
 import { Link, router } from 'umi';
 import { GridContent} from '@ant-design/pro-layout';
 import { Dispatch } from 'redux';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { connect } from 'dva';
 import ArticleListContent from './components/ArticleListContent';
 import { ConnectState, ConnectProps, Loading, ArticleListModelState,CategoryListAllState,TagListAllState ,HeatListState} from '@/models/connect';

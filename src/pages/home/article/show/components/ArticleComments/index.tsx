@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, Comment, Tooltip, Icon, Tag } from 'antd';
+import { DownOutlined, MessageOutlined } from '@ant-design/icons';
+import { List, Comment, Tooltip, Tag } from 'antd';
 import { get, unionBy } from 'lodash';
 import Editor from './Editor';
 import MarkdownBody from '@/components/MarkdownBody';
@@ -49,7 +50,7 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
       return (
         <div className={styles.loadMoreReplysBtn}>
           <a onClick={() => this.props.onFetchMoreChildrenComments(comment.id as number)}>
-            更多{total - children.length}条回复 <Icon type="down" />
+            更多{total - children.length}条回复 <DownOutlined />
           </a>
         </div>
       );
@@ -80,44 +81,42 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
       );
     };
 
-    return (
-      <>
-        {parentComment.id === this.state.parent_id && <NestedEditor comment={parentComment} />}
-        {parentComment.children && parentComment.children.map((comment: IComment) => (
-          <div
-            key={comment.id}
-            id={`comment-${comment.id}`}
-            className={this.props.topComment === comment.id ? styles.topComment : ''}
-          >
-            <Comment
-              author={
-                <span>
-                  {get(comment, 'user.username')}
-                  {this.props.article.user_id === comment.user_id && <Tag>博主</Tag>}
-                  {parentComment.user_id === comment.user_id && <Tag>楼主</Tag>}
-                </span>
-              }
-              avatar={get(comment, 'user.avatar')}
-              content={<MarkdownBody markdown={get(comment, 'content.combine_markdown')} />}
-              datetime={
-                <Tooltip title={comment.created_at}>
-                  <span>{comment.created_at_timeago}</span>
-                </Tooltip>
-              }
-              actions={[
-                <span><Upvote relation="comment" item={comment} /></span>,
-                <span><DownvoteBtn relation="comment" item={comment} /></span>,
-                <span onClick={() => this.handleCommentClick(comment)}>
-                  <Icon type="message" /> 回复
-                </span>,
-              ]}
-            />
-            {comment.id === this.state.parent_id && <NestedEditor comment={comment} />}
-          </div>
-        ))}
-        {this.renderLoadMoreReplysBtn(parentComment)}
-      </>
-    );
+    return <>
+      {parentComment.id === this.state.parent_id && <NestedEditor comment={parentComment} />}
+      {parentComment.children && parentComment.children.map((comment: IComment) => (
+        <div
+          key={comment.id}
+          id={`comment-${comment.id}`}
+          className={this.props.topComment === comment.id ? styles.topComment : ''}
+        >
+          <Comment
+            author={
+              <span>
+                {get(comment, 'user.username')}
+                {this.props.article.user_id === comment.user_id && <Tag>博主</Tag>}
+                {parentComment.user_id === comment.user_id && <Tag>楼主</Tag>}
+              </span>
+            }
+            avatar={get(comment, 'user.avatar')}
+            content={<MarkdownBody markdown={get(comment, 'content.combine_markdown')} />}
+            datetime={
+              <Tooltip title={comment.created_at}>
+                <span>{comment.created_at_timeago}</span>
+              </Tooltip>
+            }
+            actions={[
+              <span><Upvote relation="comment" item={comment} /></span>,
+              <span><DownvoteBtn relation="comment" item={comment} /></span>,
+              <span onClick={() => this.handleCommentClick(comment)}>
+                <MessageOutlined /> 回复
+              </span>,
+            ]}
+          />
+          {comment.id === this.state.parent_id && <NestedEditor comment={comment} />}
+        </div>
+      ))}
+      {this.renderLoadMoreReplysBtn(parentComment)}
+    </>;
   };
 
   render () {
@@ -167,7 +166,7 @@ class ArticleComments extends React.Component<ArticleCommentsProps, ArticleComme
                   <span><Upvote relation="comment" item={comment} /></span>,
                   <span><DownvoteBtn relation="comment" item={comment} /></span>,
                   <span onClick={() => this.handleCommentClick(comment)}>
-                    <Icon type="message" /> 评论
+                    <MessageOutlined /> 评论
                   </span>,
                 ]}
                 children={this.renderChildren(comment)}

@@ -1,4 +1,4 @@
-import { Icon, Tag } from 'antd';
+import { Tag } from 'antd';
 import React, { Component } from 'react';
 
 import classNames from 'classnames';

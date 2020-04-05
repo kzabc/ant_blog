@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Tooltip } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Tooltip } from 'antd';
 import RelationBtn from './RelationBtn';
 
 export interface FavoriteBtnProps {
@@ -41,7 +42,7 @@ class FavoriteBtn extends React.Component<FavoriteBtnProps, FavoriteBtnState> {
   getChildren = (slot: 'on' | 'off') => (
     <Tooltip title="收藏">
       <div className="btn favorite-btn">
-        <Icon
+        <LegacyIcon
           type="heart"
           theme={slot === 'on' ? 'twoTone' : 'outlined'}
           twoToneColor="#eb2f96"

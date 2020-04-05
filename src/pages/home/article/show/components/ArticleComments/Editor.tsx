@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'dva';
 import { router } from 'umi';
-import { Avatar, Button, Icon, Mentions, message, Upload } from 'antd';
+import { MessageOutlined, PictureOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Mentions, message, Upload } from 'antd';
 import { RcFile, UploadChangeParam } from 'antd/es/upload/interface';
 import { stringify } from 'qs';
 import { debounce } from 'lodash';
@@ -332,7 +333,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
                         className={styles.avatar}
                         src={currentUser.avatar}
                         alt={currentUser.nikename}
-                        icon="user"
+                        icon={<UserOutlined />}
                       />
                       {currentUser.nikename}
                     </div>
@@ -354,7 +355,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
                   beforeUpload={this.handleBeforeUpload}
                   onChange={this.handleUploadChange}
                 >
-                  <Icon type="picture" />
+                  <PictureOutlined />
                 </Upload>
               </div>
               <div
@@ -362,7 +363,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
                 className={styles.action}
                 onClick={() => this.toggleEmojiPickerPopup(this.emojiPickerBtn)}
               >
-                <span className={styles.emojiPickerBtn}><Icon type="smile" theme="outlined" /></span>
+                <span className={styles.emojiPickerBtn}><SmileOutlined /></span>
               </div>
               <div className={styles.action}>
                 <Button
@@ -372,7 +373,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
                   onClick={this.handleSubmit}
                   disabled={!logged}
                   type="primary"
-                  icon="message"
+                  icon={<MessageOutlined />}
                 >
                   评论
                 </Button>

@@ -1,6 +1,8 @@
-import { Button, Divider, Dropdown, Form, Menu, message, Avatar, Tag } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Divider, Dropdown, Menu, message, Avatar, Tag } from 'antd';
 import React, { useState, useRef } from 'react';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';

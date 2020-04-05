@@ -1,4 +1,6 @@
-import { Button, Card, DatePicker, Form, Input, Radio, Select,message ,Upload, Icon} from 'antd';
+import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Card, DatePicker, Input, Radio, Select, message, Upload } from 'antd';
 import SimpleMDEEditor, { SimpleMDEEditorProps } from 'yt-simplemde-editor';
 import emojiDependencies from 'yt-simplemde-editor/dist/emoji';
 import DOMPurify from 'dompurify';
@@ -12,7 +14,7 @@ import moment from "moment";
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import * as services from './service';
@@ -293,7 +295,7 @@ class Create extends Component<CreateProps> {
                     <img style={{ maxWidth: '100%' }} src={previewBase64} alt="preview" />
                   ) : (
                     <div>
-                      <Icon type={uploading ? 'loading' : 'plus'} />
+                      <LegacyIcon type={uploading ? 'loading' : 'plus'} />
                       <div className="ant-upload-text">Upload</div>
                     </div>
                   )}

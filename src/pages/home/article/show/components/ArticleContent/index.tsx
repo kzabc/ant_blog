@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Tag, Tooltip } from 'antd';
+import { ClockCircleOutlined, EyeOutlined, TagsFilled } from '@ant-design/icons';
+import { Tag, Tooltip } from 'antd';
 import { Link } from 'umi';
 // @ts-ignore
 import MarkdownBody from '@/components/MarkdownBody';
@@ -35,14 +36,14 @@ export default class ArticleContent extends React.Component<ArticleContentProps>
             </a>
             <span style={{ margin: '0 6px' }}>⋅</span>
             <span>
-              <Icon type="clock-circle-o" style={{ margin: '0 4px' }} />
+              <ClockCircleOutlined style={{ margin: '0 4px' }} />
                 <Tooltip title={article.created_at}>
                   <span>{article.created_at_timeago}</span>
                 </Tooltip>
             </span>
             <span style={{ margin: '0 6px' }}>⋅</span>
             <span>
-              <Icon type="eye-o" style={{ marginRight: 4 }} />
+              <EyeOutlined style={{ marginRight: 4 }} />
               {article.friendly_views_count} 阅读
             </span>
           </div>
@@ -58,7 +59,7 @@ export default class ArticleContent extends React.Component<ArticleContentProps>
         </div>
 
         <div className={styles.tags}>
-          <Icon type="tags" theme="filled" style={{ marginRight: 12, fontSize: 16 }} />
+          <TagsFilled style={{ marginRight: 12, fontSize: 16 }} />
           {
             article &&
             article.tags &&

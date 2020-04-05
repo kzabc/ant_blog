@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Row, Col, Button, Skeleton, message } from 'antd';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { connect } from 'dva';
 import { Link } from 'umi';
 import { debounce } from 'lodash';

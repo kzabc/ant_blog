@@ -1,4 +1,5 @@
-import { Avatar, Icon, Menu, Spin } from 'antd';
+import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Menu, Spin } from 'antd';
 import { ClickParam } from 'antd/es/menu';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
@@ -58,20 +59,20 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         {menu && (
 
           <Menu.Item key="center">
-            <Icon type="user" />
+            <UserOutlined />
             <FormattedMessage id="menu.account.center" defaultMessage="account center" />
           </Menu.Item>
         )}
         {menu && (
           <Menu.Item key="settings">
-            <Icon type="setting" />
+            <SettingOutlined />
             <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
 
         <Menu.Item key="logout">
-          <Icon type="logout" />
+          <LogoutOutlined />
           <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
         </Menu.Item>
       </Menu>
@@ -85,7 +86,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       </HeaderDropdown>
     ) : (
       <a className={`${styles.action} ${styles.account}`} onClick={this.onLoginClick}>
-        <Avatar className={styles.avatar} icon="user" alt="登录" size="small" />
+        <Avatar className={styles.avatar} icon={<UserOutlined />} alt="登录" size="small" />
         <span className={styles.name} style={{ color: 'rgba(0,0,0,.65)' }}>
           账户中心
         </span>

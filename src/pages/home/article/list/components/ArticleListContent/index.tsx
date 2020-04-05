@@ -1,4 +1,5 @@
-import { Avatar,Icon, Tooltip  } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Avatar, Tooltip } from 'antd';
 import React from 'react';
 import styles from './index.less';
 import Ellipsis from '@/components/Ellipsis';
@@ -16,7 +17,7 @@ const IconText: React.FC<{
     return (
       <Tooltip title={tooltip}>
         <span style={{ marginRight: 16 }}>
-          <Icon type={type} style={{ marginRight: 4 }} />
+          <LegacyIcon type={type} style={{ marginRight: 4 }} />
           {text}
         </span>
       </Tooltip>
@@ -25,7 +26,7 @@ const IconText: React.FC<{
 
   return (
     <span style={{ marginRight: 16 }}>
-      <Icon type={type} style={{ marginRight: 4 }} />
+      <LegacyIcon type={type} style={{ marginRight: 4 }} />
       {text}
     </span>
   );

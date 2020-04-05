@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Dispatch } from 'redux';
 import { Link } from 'umi';
-import { FormComponentProps } from 'antd/es/form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { connect } from 'dva';
 import ArticleListContent from './components/ArticleListContent';
 import {

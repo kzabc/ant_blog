@@ -1,4 +1,5 @@
-import { Avatar, Card, Col, Divider, Icon, Input, Row, Tag } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
 import React, { PureComponent } from 'react';
 
 import { Dispatch } from 'redux';
@@ -207,7 +208,7 @@ class AccountCenter extends PureComponent<
                         onClick={this.showInput}
                         style={{ background: '#fff', borderStyle: 'dashed' }}
                       >
-                        <Icon type="plus" />
+                        <PlusOutlined />
                       </Tag>
                     )}
                   </div>

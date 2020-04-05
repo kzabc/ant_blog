@@ -1,6 +1,8 @@
 import React from 'react';
-import { Form, Input, InputNumber, Modal } from 'antd';
-import { FormComponentProps } from 'antd/es/form';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, InputNumber, Modal } from 'antd';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { ITag } from '@/models/data';
 
 const FormItem = Form.Item;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import RelationBtn from './RelationBtn';
 
 export interface UpvoteBtnProps {
@@ -40,7 +40,7 @@ class UpvoteBtn extends React.Component<UpvoteBtnProps, UpvoteBtnState> {
 
   getChildren = (slot: 'on' | 'off') => (
     <div className="upvote upvote-btn">
-      <Icon
+      <LegacyIcon
         type="like"
         theme={slot === 'on' ? 'twoTone' : 'outlined'}
         twoToneColor="#13C2C2"

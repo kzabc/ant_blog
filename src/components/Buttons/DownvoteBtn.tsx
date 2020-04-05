@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import RelationBtn from './RelationBtn';
 
 export interface DownvoteBtnProps {
@@ -40,7 +40,7 @@ class DownvoteBtn extends React.Component<DownvoteBtnProps, DownvoteBtnState> {
 
   getChildren = (slot: 'on' | 'off') => (
     <div className="downvote downvote-btn">
-      <Icon
+      <LegacyIcon
         type="dislike"
         theme={slot === 'on' ? 'twoTone' : 'outlined'}
         twoToneColor="#ff4d4f"

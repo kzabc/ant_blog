@@ -1,4 +1,5 @@
-import { Icon, List, Tag } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { List, Tag } from 'antd';
 import React from 'react';
 
 import { connect } from 'dva';
@@ -14,7 +15,7 @@ const Articles: React.FC<Partial<ModalState>> = props => {
     text: React.ReactNode;
   }> = ({ type, text }) => (
     <span>
-      <Icon type={type} style={{ marginRight: 8 }} />
+      <LegacyIcon type={type} style={{ marginRight: 8 }} />
       {text}
     </span>
   );

@@ -1,6 +1,8 @@
 import React from 'react';
-import { message, Form } from 'antd';
-import { FormComponentProps } from 'antd/es/form';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { message } from 'antd';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
 import SimpleMDEEditor, { SimpleMDEEditorProps } from 'yt-simplemde-editor';
 import emojiDependencies from 'yt-simplemde-editor/dist/emoji';
 // @ts-ignore

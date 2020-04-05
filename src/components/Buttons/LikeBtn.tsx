@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Tooltip } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Tooltip } from 'antd';
 import RelationBtn from './RelationBtn';
 
 export interface LikeBtnProps {
@@ -41,7 +42,7 @@ class LikeBtn extends React.Component<LikeBtnProps, LikeBtnState> {
   getChildren = (slot: 'on' | 'off') => (
     <Tooltip title="点赞">
       <div className="btn like-btn">
-        <Icon
+        <LegacyIcon
           type="like"
           theme={slot === 'on' ? 'twoTone' : 'outlined'}
           twoToneColor="#13C2C2"

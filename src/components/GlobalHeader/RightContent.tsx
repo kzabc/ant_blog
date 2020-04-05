@@ -1,4 +1,4 @@
-import { Icon } from 'antd';
+import { GithubOutlined } from '@ant-design/icons';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -44,7 +44,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <Icon type="github" className={styles.github} />
+        <GithubOutlined className={styles.github} />
       </a>
     </div>
   );
