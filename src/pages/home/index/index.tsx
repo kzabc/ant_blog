@@ -1,4 +1,4 @@
-import { Card, Col, List, Row, Tag } from 'antd';
+import { Card, Col, List, Row, Tag ,Carousel} from 'antd';
 import React, { Component } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Dispatch } from 'redux';
@@ -14,7 +14,6 @@ import {
   HeatListState,
 } from '@/models/connect';
 import { IArticle } from '@/models/data';
-import BannerAnim, { Element } from 'rc-banner-anim';
 import styles from './style.less';
 
 interface IndexProps extends ConnectProps, FormComponentProps {
@@ -49,7 +48,6 @@ class Index extends Component<IndexProps> {
       tagAll: { list: tag },
       heat: { list: heatList, newList },
     } = this.props;
-    const BgElement = Element.BgElement;
     const formItemLayout = {
       xl: { span: 8 },
     };
@@ -60,68 +58,38 @@ class Index extends Component<IndexProps> {
 
     return (
       <GridContent>
-        <Row gutter={[12, 12]}>
-          <Col {...topColResponsiveProps}>
-            <BannerAnim prefixCls="banner-user" autoPlay>
-              <Element prefixCls="banner-user-elem" key="0">
-                <BgElement
-                  key="bg"
-                  className="bg"
-                  style={{
-                    background: 'url(http://qiniu.kzabc.com/banner1.png) no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                />
-              </Element>
-              <Element prefixCls="banner-user-elem" key="1">
-                <BgElement
-                  key="bg"
-                  className="bg"
-                  style={{
-                    background: 'url(http://qiniu.kzabc.com/banner2.png) no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                />
 
-                {/*<TweenOne className="banner-user-title" animation={{ y: 30, opacity: 0, type: 'from' }}>*/}
-                {/*  Ant Motion Banner*/}
-                {/*</TweenOne>*/}
-                {/*<TweenOne className="banner-user-text"*/}
-                {/*          animation={{ y: 30, opacity: 0, type: 'from', delay: 100 }}*/}
-                {/*>*/}
-                {/*  The Fast Way Use Animation In React*/}
-                {/*</TweenOne>*/}
-              </Element>
-            </BannerAnim>
+        <Row gutter={12}>
+          <Col {...topColResponsiveProps}>
+            <Carousel
+              autoplay={true}
+              effect="fade"
+            >
+              <img src="http://qiniu.kzabc.com/banner1.png"/>
+              <img src="http://qiniu.kzabc.com/banner2.png"/>
+            </Carousel>
           </Col>
           <Col {...formItemLayout}>
             <Card bodyStyle={{ padding: '0px' }}>
               <div>
                 <img alt="example" width="100%" src="http://qiniu.kzabc.com/xiao.png" />
               </div>
-            </Card>
-            <Card bodyStyle={{ padding: '0px' }} style={{ marginTop: 6 }}>
-              <div>
+              <div style={{ marginTop: '6px' }}>
                 <img alt="example" width="100%" src="http://qiniu.kzabc.com/ya.png" />
               </div>
             </Card>
           </Col>
-        </Row>
-
-        <Row gutter={12}>
           <Col {...topColResponsiveProps}>
             <Card
               size={'small'}
               loading={loading.global}
               title="最新文章"
+              style={{ marginTop: 12 }}
               extra={
                 <Link className={styles.listItemMetaTitle} to={`/article/list`}>
                   更多
                 </Link>
               }
-              style={{ marginTop: 6 }}
               bordered={false}
               bodyStyle={{ padding: '8px 32px 32px 32px' }}
             >
@@ -130,30 +98,30 @@ class Index extends Component<IndexProps> {
                 size="small"
                 itemLayout="vertical"
                 dataSource={newList}
-                renderItem={item => (
+                renderItem={newItem => (
                   <List.Item
-                    key={item.id}
+                    key={newItem.id}
                     extra={
                       <div className={styles.listItemExtra}>
-                        {item.preview && <img src={item.preview} width="100%" alt="预览" />}
+                        {newItem.preview && <img src={newItem.preview} width="100%" alt="预览" />}
                       </div>
                     }
                   >
                     <List.Item.Meta
                       title={
-                        <Link className={styles.listItemMetaTitle} to={`/article/${item.id}`}>
-                          {item.title}
+                        <Link className={styles.listItemMetaTitle} to={`/article/${newItem.id}`}>
+                          {newItem.title}
                         </Link>
                       }
                       description={
                         <span>
-                          {item.tags.map(tag => (
+                          {newItem.tags.map(tag => (
                             <Tag>{tag.name}</Tag>
                           ))}
                         </span>
                       }
                     />
-                    <ArticleListContent data={item} />
+                    <ArticleListContent data={newItem} />
                   </List.Item>
                 )}
               />
@@ -163,9 +131,9 @@ class Index extends Component<IndexProps> {
             <Card
               size={'small'}
               loading={loading.global}
-              style={{ marginTop: 6 }}
               title={'特别推荐'}
               bordered={false}
+              style={{ marginTop: 12 }}
               bodyStyle={{ padding: '8px 32px 32px 32px' }}
             >
               <List<IArticle>

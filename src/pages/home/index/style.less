@@ -1,33 +1,12 @@
 @import '~antd/es/style/themes/default.less';
-@import '~rc-banner-anim/assets/index.css';
 .ant-card-body {
   padding: 0;
 }
 :global {
-  .banner-anim {
-    height: 360px;
-  }
-  .banner-user-elem {
+  .ant-carousel .slick-slide {
     text-align: center;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
   }
-  .banner-user-elem .banner-user-title {
-    font-size: 32px;
-    top: 40%;
-  }
-  .banner-user-elem .banner-user-text {
-    top: 40%;
-  }
-  .banner-anim-elem .bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-  }
+
   .ant-col {
     padding: 0;
   }
@@ -44,7 +23,6 @@ a.listItemMetaTitle {
 }
 .listItemExtra {
   width: 272px;
-  overflow: hidden;
   .preview {
     position: absolute;
     width: 320px;
@@ -73,9 +51,6 @@ a.listItemMetaTitle {
   }
 }
 @media screen and (max-width: @screen-sm) {
-  :global(.banner-anim) {
-    height: 160px;
-  }
   .selfTrigger {
     display: block;
     margin-left: 0;
