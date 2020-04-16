@@ -91,7 +91,7 @@ class Index extends Component<IndexProps> {
                 </Link>
               }
               bordered={false}
-              bodyStyle={{ padding: '8px 32px 32px 32px' }}
+              bodyStyle={{ padding: '8px 16px 16px 16px' }}
             >
               <List<IArticle>
                 key="id"
@@ -134,7 +134,7 @@ class Index extends Component<IndexProps> {
               title={'特别推荐'}
               bordered={false}
               style={{ marginTop: 12 }}
-              bodyStyle={{ padding: '8px 32px 32px 32px' }}
+              bodyStyle={{ padding: '8px 16px 16px 16px' }}
             >
               <List<IArticle>
                 key="id"

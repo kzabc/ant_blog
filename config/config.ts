@@ -290,11 +290,11 @@ export default {
             },
           ],
         },
-        {
-          name: 'project',
-          path: '/project',
-          component: './home/project',
-        },
+        // {
+        //   name: 'project',
+        //   path: '/project',
+        //   component: './home/project',
+        // },
         {
           path: 'welcome',
           name: 'welcome',
@@ -363,7 +363,7 @@ export default {
   chainWebpack: webpackPlugin,
   proxy: {
     '/api/': {
-      target: 'http://test.kzabc.com',
+      target: 'http://api.kzabc.com',
       changeOrigin: true,
       // pathRewrite: {
       //    '^/api': '',

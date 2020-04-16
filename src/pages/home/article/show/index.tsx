@@ -202,7 +202,7 @@ class ArticleShow extends React.Component<ArticleShowProps, ArticleShowState> {
           <Col xl={6} lg={0} md={0} sm={0} xs={0}>
             <Card bordered={false} style={{ marginBottom: 24 }}>
               <img
-                src="http://qiniu.einsition.com/article/a29/aeaaf2374ac87d119f537916f6a0a579.jpeg"
+                src="http://qiniu.kzabc.com/WechatIMG87.jpeg"
                 alt="小程序二维码"
                 style={{ width: '100%', height: '100%' }}
               />

@@ -1,6 +1,6 @@
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Card, Col, List, Row, Tag, Menu, Layout, Tooltip } from 'antd';
+import { Card, Col, List, Row, Tag, Menu, Layout, Tooltip ,Radio} from 'antd';
 import React, { Component } from 'react'
 import { Link, router } from 'umi';
 import { GridContent} from '@ant-design/pro-layout';
@@ -127,13 +127,12 @@ class Article extends Component<ArticleListProps,ArticleListModelState> {
                     {getFieldDecorator('category_ids', {
                       initialValue: query.tag_ids,
                     })(
-                      <TagSelect >
+                      <Radio.Group defaultValue="0" buttonStyle="solid">
+                        <Radio.Button value="0" style={{marginLeft:"16px",border:"none"}}>全部</Radio.Button>
                         {category.map(tag => (
-                          <TagSelect.Option value={String(tag.id)} key={String(tag.id)} style={{fontSize:18}}>
-                            {tag.name}
-                          </TagSelect.Option>
+                            <Radio.Button value={String(tag.id)} style={{marginLeft:10,border:"none"}}>{tag.name}</Radio.Button>
                         ))}
-                      </TagSelect>,
+                      </Radio.Group>
                     )}
                   </FormItem>
               </Form>
@@ -142,7 +141,7 @@ class Article extends Component<ArticleListProps,ArticleListModelState> {
               <Card
                 loading={loading.global}
                 bordered={false}
-                bodyStyle={{ padding: '8px 32px 32px 32px' }}
+                bodyStyle={{ padding: '8px 16px 16px 16px' }}
 
               >
                 <List<IArticle>
@@ -192,7 +191,7 @@ class Article extends Component<ArticleListProps,ArticleListModelState> {
               size="small"
               title="特别推荐"
               bordered={false}
-              bodyStyle={{ padding: '8px 32px 32px 32px' }}
+              bodyStyle={{ padding: '8px 16px 16px 16px' }}
             >
               <List<IArticle>
                 size="small"
