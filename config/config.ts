@@ -269,13 +269,11 @@ export default {
         },
         {
           name: 'home',
-          icon: 'smile',
           path: '/',
           component: './home/index',
         },
         {
           name: 'article',
-          icon: 'smile',
           path: '/article',
           routes: [
             {
@@ -294,14 +292,12 @@ export default {
         },
         {
           name: 'project',
-          icon: 'smile',
           path: '/project',
           component: './home/project',
         },
         {
           path: 'welcome',
           name: 'welcome',
-          icon: 'smile',
           component: './Welcome',
         },
         {
