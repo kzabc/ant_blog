@@ -50,12 +50,25 @@ class Index extends Component<IndexProps> {
     } = this.props;
     const formItemLayout = {
       xl: { span: 8 },
+      lg:{span: 8 },
+      md:{span: 8 },
+      sm:{span: 24 },
+      xs:{span: 24 }
     };
-
+    const ItemLayout = {
+      xl: { span: 8 },
+      lg:{span: 8 },
+      md:{span: 8 },
+      sm:{span: 0 },
+      xs:{span: 0 }
+    };
     const topColResponsiveProps = {
       xl: { span: 16 },
+      lg:{span: 16 },
+      md:{span: 16 },
+      sm:{span: 24 },
+      xs:{span: 24 }
     };
-
     return (
       <GridContent>
 
@@ -69,7 +82,7 @@ class Index extends Component<IndexProps> {
               <img src="http://qiniu.kzabc.com/banner2.png"/>
             </Carousel>
           </Col>
-          <Col {...formItemLayout}>
+          <Col {...ItemLayout}>
             <Card bodyStyle={{ padding: '0px' }}>
               <div>
                 <img alt="example" width="100%" src="http://qiniu.kzabc.com/xiao.png" />

@@ -99,10 +99,18 @@ class Article extends Component<ArticleListProps,ArticleListModelState> {
 
     const formItemLayout = {
       xl: { span: 8 },
+      lg:{span: 8 },
+      md:{span: 8 },
+      sm:{span: 24 },
+      xs:{span: 24 }
     };
 
     const topColResponsiveProps = {
       xl: { span: 16 },
+      lg:{span: 16 },
+      md:{span: 16 },
+      sm:{span: 24 },
+      xs:{span: 24 }
     };
     return (
       <GridContent >
