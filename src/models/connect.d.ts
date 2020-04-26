@@ -1,6 +1,4 @@
-import { AnyAction } from 'redux';
 import { MenuDataItem } from '@ant-design/pro-layout';
-import { RouterTypes } from 'umi';
 import { GlobalModelState } from './global';
 import { DefaultSettings as SettingModelState } from '../../config/defaultSettings';
 import { UserModelState } from './user';
@@ -9,6 +7,7 @@ import { StateType as ArticleShowModelState } from '@/pages/home/article/show/mo
 import { StateType as CategoryListAllState } from '@/models/category';
 import { StateType as TagListAllState } from '@/models/tag';
 import { StateType as HeatListState } from '@/models/heat';
+
 export {
   GlobalModelState,
   SettingModelState,
@@ -29,11 +28,11 @@ export interface Loading {
     setting?: boolean;
     user?: boolean;
     login?: boolean;
-    homeAndarticle?:boolean;
-    articleShow?:boolean;
-    categoryAll?:boolean;
-    tagAll?:boolean;
-    heat?:boolean
+    homeAndarticle?: boolean;
+    articleShow?: boolean;
+    categoryAll?: boolean;
+    tagAll?: boolean;
+    heat?: boolean;
   };
 }
 
@@ -42,11 +41,11 @@ export interface ConnectState {
   loading: Loading;
   settings: SettingModelState;
   user: UserModelState;
-  homeAndarticle:ArticleListModelState;
-  articleShow:ArticleShowModelState;
-  categoryAll:CategoryListAllState;
-  tagAll:TagListAllState;
-  heat:HeatListState;
+  homeAndarticle: ArticleListModelState;
+  articleShow: ArticleShowModelState;
+  categoryAll: CategoryListAllState;
+  tagAll: TagListAllState;
+  heat: HeatListState;
 }
 
 export interface Route extends MenuDataItem {
@@ -63,16 +62,3 @@ export type Dispatch = <P = any, C = (payload: P) => void>(action: {
   callback?: C;
   [key: string]: any;
 }) => any;
-
-/**
- * @type T: Params matched in dynamic routing
- */
-/**
- * @type T: Params matched in dynamic routing
- */
-export interface ConnectProps<T = {}> extends RouterTypes<Route, T> {
-  dispatch: Dispatch;
-  location: RouterTypes<Route, T>['location'] & {
-    query: { [key: string]: string };
-  };
-}

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { connect } from 'dva';
-import router from 'umi/router';
+import { history, connect } from 'umi';
 
 interface ListProps {
   match: {
@@ -20,19 +18,15 @@ class List extends Component<ListProps> {
     const url = match.url === '/' ? '' : match.url;
     switch (key) {
       case 'release':
-        router.push(`${url}/release`);
+        history.push(`${url}/release`);
         break;
       case 'draft':
-        router.push(`${url}/draft`);
-        break;
-      case 'examination':
-        router.push(`${url}/examination`);
+        history.push(`${url}/draft`);
         break;
       default:
         break;
     }
   };
-
 
   getTabKey = () => {
     const { match, location } = this.props;
@@ -51,15 +45,10 @@ class List extends Component<ListProps> {
         tab: '已发布',
       },
       {
-        key: 'examination',
-        tab: '待审批',
-      },
-      {
         key: 'draft',
         tab: '草稿箱',
       },
     ];
-
 
     const { children } = this.props;
 

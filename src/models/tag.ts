@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryTagAll } from '@/services/tag';
-import {ITag} from "@/models/data";
+import { queryTagAll } from '@/services/common';
+import { ITag } from '@/models/data';
 
 export interface StateType {
   list: ITag[];
@@ -40,20 +40,20 @@ const TagModel: TagModel = {
   namespace: 'tagAll',
 
   state: {
-    list:[],
+    list: [],
   },
   effects: {
     *fetch(_, { call, put }) {
       const { data: list } = yield call(queryTagAll);
       yield put({
         type: 'saveTag',
-        payload: {list},
+        payload: { list },
       });
     },
   },
 
   reducers: {
-    saveTag(state, {payload}) {
+    saveTag(state, { payload }) {
       return {
         ...state,
         ...payload,

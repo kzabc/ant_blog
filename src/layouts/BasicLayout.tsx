@@ -11,12 +11,10 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
-import Link from 'umi/link';
-import { Dispatch } from 'redux';
-import { connect } from 'dva';
+import { Dispatch, connect, Link, formatMessage } from 'umi';
+
 import { GithubOutlined } from '@ant-design/icons';
 import { BackTop, Result, Button } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
@@ -187,7 +185,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         );
       }}
       footerRender={footerRender}
-      menuDataRender={() => menuDataRender}
+      menuDataRender={menuDataRender}
       formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}

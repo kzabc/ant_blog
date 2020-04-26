@@ -1,16 +1,14 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet } from 'react-helmet';
-import Link from 'umi/link';
 import React from 'react';
-import { connect } from 'dva';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { connect, formatMessage, Link, ConnectProps } from 'umi';
 
 import SelectLang from '@/components/SelectLang';
-import { ConnectProps, ConnectState } from '@/models/connect';
+import { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 
-export interface UserLayoutProps extends ConnectProps {
+export interface UserLayoutProps extends Partial<ConnectProps> {
   breadcrumbNameMap: { [path: string]: MenuDataItem };
 }
 

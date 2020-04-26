@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'dva';
-import { router } from 'umi';
+import { history, ConnectProps, connect } from 'umi';
 import { MessageOutlined, PictureOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Mentions, message, Upload } from 'antd';
 import { RcFile, UploadChangeParam } from 'antd/es/upload/interface';
@@ -12,7 +11,7 @@ import EmojiPicker from 'yt-emoji-picker';
 import emojiToolkit from 'emoji-toolkit';
 import MarkdownBody from '@/components/MarkdownBody';
 import InlineUpload from './InlineUpload';
-import { ConnectProps, ConnectState, UserModelState } from '@/models/connect';
+import { ConnectState, UserModelState } from '@/models/connect';
 import { getPageQuery, getPositions, insertText, isParentElement } from '@/utils/utils';
 import { getAuthorization } from '@/utils/authority';
 import calculateNodeHeight from './calculateNodeHeight';
@@ -45,14 +44,17 @@ interface ArticleCommentEditorProps extends ConnectProps {
 const uploadUrl = '/api/attachments/upload';
 
 /* eslint max-len: 0 */
-class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, ArticleCommentEditorState> {
+class ArticleCommentEditor extends React.Component<
+  ArticleCommentEditorProps,
+  ArticleCommentEditorState
+> {
   static emojiPickerPopup?: HTMLDivElement;
 
   static instance: ArticleCommentEditor;
 
   static stackCount: number = 0;
 
-  constructor (props: ArticleCommentEditorProps) {
+  constructor(props: ArticleCommentEditorProps) {
     super(props);
 
     this.state = {
@@ -71,7 +73,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
 
   textarea: HTMLTextAreaElement | any;
 
-  componentDidMount () {
+  componentDidMount() {
     this.resizeTextarea();
 
     if (this.textarea) {
@@ -82,7 +84,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
           Accept: `application/json`,
           Authorization: getAuthorization(),
         },
-        onError (err: any, response: { message?: string }) {
+        onError(err: any, response: { message?: string }) {
           if (response.message) {
             message.error(response.message);
           }
@@ -100,11 +102,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
       ArticleCommentEditor.emojiPickerPopup.style.position = 'absolute';
       ArticleCommentEditor.emojiPickerPopup.style.zIndex = '99999';
 
-      document.body.addEventListener(
-        'click',
-        this.hiddenEmojiPickerPopup,
-        false,
-      );
+      document.body.addEventListener('click', this.hiddenEmojiPickerPopup, false);
 
       document.body.appendChild(ArticleCommentEditor.emojiPickerPopup);
 
@@ -121,15 +119,11 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
     this.textarea.addEventListener('keydown', this.handleKeydownEvent);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     ArticleCommentEditor.stackCount--;
 
     if (ArticleCommentEditor.emojiPickerPopup && ArticleCommentEditor.stackCount === 0) {
-      document.body.removeEventListener(
-        'click',
-        this.hiddenEmojiPickerPopup,
-        false,
-      );
+      document.body.removeEventListener('click', this.hiddenEmojiPickerPopup, false);
 
       document.body.removeChild(ArticleCommentEditor.emojiPickerPopup);
 
@@ -220,7 +214,10 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
   };
 
   hiddenEmojiPickerPopup = (e: any) => {
-    if (ArticleCommentEditor.emojiPickerPopup && ArticleCommentEditor.emojiPickerPopup.style.display !== 'none') {
+    if (
+      ArticleCommentEditor.emojiPickerPopup &&
+      ArticleCommentEditor.emojiPickerPopup.style.display !== 'none'
+    ) {
       if (
         !isParentElement(e.target, [
           ArticleCommentEditor.emojiPickerPopup,
@@ -239,9 +236,11 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
       return this.setState({ mentionUsers: defaultMentionUsers.slice(0, 6) });
     }
 
-    const mentionUsers = defaultMentionUsers.filter((user) => {
-      return (user.username as string).toLowerCase().indexOf(search.toLowerCase()) >= 0;
-    }).slice(0, 6);
+    const mentionUsers = defaultMentionUsers
+      .filter(user => {
+        return (user.username as string).toLowerCase().indexOf(search.toLowerCase()) >= 0;
+      })
+      .slice(0, 6);
     if (mentionUsers.length) {
       return this.setState({ mentionUsers });
     }
@@ -280,7 +279,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
     const { redirect } = getPageQuery();
     // redirect
     if (window.location.pathname !== '/user/login' && !redirect) {
-      router.push({
+      history.push({
         pathname: '/user/login',
         search: stringify({
           redirect: window.location.href,
@@ -289,7 +288,7 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
     }
   };
 
-  render () {
+  render() {
     const {
       submitting,
       className,
@@ -316,7 +315,11 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
               value={value}
             >
               {mentionUsers.map(({ avatar, username }) => (
-                <Mentions.Option key={username} value={username} className="antd-demo-dynamic-option">
+                <Mentions.Option
+                  key={username}
+                  value={username}
+                  className="antd-demo-dynamic-option"
+                >
                   <img src={avatar} alt={username} className={styles.mentionsAvatar} />
                   <span>{username}</span>
                 </Mentions.Option>
@@ -325,23 +328,21 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
           </div>
           <div className={styles.toolbar}>
             <div className={styles.info}>
-              {
-                logged ?
-                  (
-                    <div>
-                      <Avatar
-                        className={styles.avatar}
-                        src={currentUser.avatar}
-                        alt={currentUser.nikename}
-                        icon={<UserOutlined />}
-                      />
-                      {currentUser.nikename}
-                    </div>
-                  ) :
-                  (
-                    <div>您需要 <a onClick={this.jumpToLogin}>登录</a> 才能发表评论</div>
-                  )
-              }
+              {logged ? (
+                <div>
+                  <Avatar
+                    className={styles.avatar}
+                    src={currentUser.avatar}
+                    alt={currentUser.nikename}
+                    icon={<UserOutlined />}
+                  />
+                  {currentUser.nikename}
+                </div>
+              ) : (
+                <div>
+                  您需要 <a onClick={this.jumpToLogin}>登录</a> 才能发表评论
+                </div>
+              )}
             </div>
             <div className={styles.actions}>
               <div className={styles.action}>
@@ -363,7 +364,9 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
                 className={styles.action}
                 onClick={() => this.toggleEmojiPickerPopup(this.emojiPickerBtn)}
               >
-                <span className={styles.emojiPickerBtn}><SmileOutlined /></span>
+                <span className={styles.emojiPickerBtn}>
+                  <SmileOutlined />
+                </span>
               </div>
               <div className={styles.action}>
                 <Button
@@ -381,12 +384,11 @@ class ArticleCommentEditor extends React.Component<ArticleCommentEditorProps, Ar
             </div>
           </div>
         </div>
-        {
-          preview && value &&
+        {preview && value && (
           <div className={styles.preview}>
             <MarkdownBody markdown={value} />
           </div>
-        }
+        )}
       </div>
     );
   }

@@ -10,8 +10,8 @@ import { getAuthorization } from '@/utils/authority';
 import { IArticle, ITag } from '@/models/data';
 import emojiToolkit from 'emoji-toolkit';
 import marked from 'marked';
-import moment from "moment";
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import moment from 'moment';
+import { formatMessage } from 'umi';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
@@ -30,13 +30,13 @@ interface CreateProps extends FormComponentProps {
 
 type GetBase64Callback = (base64: any) => void;
 
-function getBase64 (img: File | Blob, cb: GetBase64Callback): void {
+function getBase64(img: File | Blob, cb: GetBase64Callback): void {
   const reader = new FileReader();
   reader.addEventListener('load', () => cb(reader.result));
   reader.readAsDataURL(img);
 }
 
-function beforeUpload (file: File): boolean {
+function beforeUpload(file: File): boolean {
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
     message.error('Image must smaller than 2MB!');
@@ -63,8 +63,8 @@ function disabledDateTime() {
 }
 
 interface ArticleCreateState {
-  allTags:ITag[];
-  allCategorys:ITag[];
+  allTags: ITag[];
+  allCategorys: ITag[];
   uploading: boolean;
   previewBase64: string;
 }
@@ -72,26 +72,25 @@ const uploadUrl = '/api/attachments/upload';
 class Create extends Component<CreateProps> {
   state: ArticleCreateState = {
     allTags: [],
-    allCategorys:[],
+    allCategorys: [],
     uploading: false,
     previewBase64: '',
   };
   async UNSAFE_componentWillMount() {
     const { data: allTags } = await services.queryAllTags();
     const { data: allCategorys } = await services.queryAllCategorys();
-    this.setState({ allTags,allCategorys });
+    this.setState({ allTags, allCategorys });
   }
 
   handleSubmit = (e: React.FormEvent) => {
     const { dispatch, form } = this.props;
     e.preventDefault();
-    form.validateFieldsAndScroll((err, values:IArticle) => {
+    form.validateFieldsAndScroll((err, values: IArticle) => {
       if (!err) {
         dispatch({
           type: 'articleCreate/submitRegularForm',
           payload: values,
         });
-
       }
     });
   };
@@ -104,17 +103,17 @@ class Create extends Component<CreateProps> {
       const { setFieldsValue } = this.props.form;
 
       file.originFileObj &&
-      getBase64(file.originFileObj, previewBase64 =>
-        this.setState(
-          {
-            previewBase64,
-            uploading: false,
-          },
-          () => {
-            setFieldsValue({ preview: file.response.data.url });
-          },
-        ),
-      );
+        getBase64(file.originFileObj, previewBase64 =>
+          this.setState(
+            {
+              previewBase64,
+              uploading: false,
+            },
+            () => {
+              setFieldsValue({ preview: file.response.data.url });
+            },
+          ),
+        );
     }
   };
 
@@ -124,10 +123,8 @@ class Create extends Component<CreateProps> {
   };
 
   render() {
-    const {  uploading, previewBase64 , allTags, allCategorys,} = this.state;
-    const {
-      submitting,
-    } = this.props;
+    const { uploading, previewBase64, allTags, allCategorys } = this.state;
+    const { submitting } = this.props;
     const {
       form: { getFieldDecorator, getFieldValue },
     } = this.props;
@@ -198,7 +195,7 @@ class Create extends Component<CreateProps> {
           Accept: `application/x.kzabc.v1+json`,
           Authorization: getAuthorization(),
         },
-        onError (err: any, response: { message?: string }) {
+        onError(err: any, response: { message?: string }) {
           if (response.message) {
             message.error(response.message);
           }
@@ -213,13 +210,9 @@ class Create extends Component<CreateProps> {
     };
 
     return (
-      <PageHeaderWrapper >
+      <PageHeaderWrapper>
         <Card bordered={false}>
-          <Form
-            onSubmit={this.handleSubmit}
-            hideRequiredMark
-            style={{ marginTop: 8 }}
-          >
+          <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} colon={false}>
               {getFieldDecorator('title', {
                 rules: [
@@ -230,7 +223,7 @@ class Create extends Component<CreateProps> {
                 ],
               })(
                 <Input
-                  addonBefore={<FormattedMessage id="article-create.title.label" />}
+                  addonBefore={formatMessage({ id: 'article-create.title.label' })}
                   placeholder={formatMessage({ id: 'article-create.title.placeholder' })}
                 />,
               )}
@@ -278,7 +271,7 @@ class Create extends Component<CreateProps> {
                 </Select>,
               )}
             </FormItem>
-            <FormItem {...formItemLayout} >
+            <FormItem {...formItemLayout}>
               {getFieldDecorator('preview')(
                 <Upload
                   accept="image/*"
@@ -287,7 +280,10 @@ class Create extends Component<CreateProps> {
                   className={styles.previewUploader}
                   showUploadList={false}
                   action={uploadUrl}
-                  headers={{ Authorization: getAuthorization(),  Accept: `application/x.kzabc.v1+json`, }}
+                  headers={{
+                    Authorization: getAuthorization(),
+                    Accept: `application/x.kzabc.v1+json`,
+                  }}
                   beforeUpload={beforeUpload}
                   onChange={this.handlePreviewChange}
                 >
@@ -302,7 +298,7 @@ class Create extends Component<CreateProps> {
                 </Upload>,
               )}
             </FormItem>
-            <FormItem {...formItemLayout}  colon={false}>
+            <FormItem {...formItemLayout} colon={false}>
               <div>
                 {getFieldDecorator('is_original', {
                   initialValue: '1',
@@ -351,7 +347,7 @@ class Create extends Component<CreateProps> {
                 </FormItem>
               </div>
             </FormItem>
-            <FormItem {...formItemLayout}  colon={false}>
+            <FormItem {...formItemLayout} colon={false}>
               {getFieldDecorator('content.markdown', {
                 validateTrigger: 'onBlur',
                 rules: [
@@ -360,16 +356,14 @@ class Create extends Component<CreateProps> {
                     message: formatMessage({ id: 'article-create.content.required' }),
                   },
                 ],
-              })(
-                <SimpleMDEEditor {...editorProps} />,
-              )}
+              })(<SimpleMDEEditor {...editorProps} />)}
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
               <Button type="primary" htmlType="submit" loading={submitting}>
-                <FormattedMessage id="article-create.form.submit" />
+                {formatMessage({ id: 'article-create.form.submit' })}
               </Button>
               <Button style={{ marginLeft: 8 }}>
-                <FormattedMessage id="article-create.form.save" />
+                {formatMessage({ id: 'article-create.form.save' })}
               </Button>
             </FormItem>
           </Form>

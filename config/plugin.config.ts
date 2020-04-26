@@ -51,7 +51,7 @@ export default (config: any) => {
 
   // optimize chunks
   config.optimization
-  // share the same chunks across different modules
+    // share the same chunks across different modules
     .runtimeChunk(false)
     .splitChunks({
       chunks: 'async',
@@ -97,7 +97,13 @@ export default (config: any) => {
             return /@antd/.test(resource);
           },
           priority: 20,
-
+        },
+        umijs: {
+          name: 'umijs',
+          test({ resource }) {
+            return /@umijs/.test(resource);
+          },
+          priority: 20,
         },
       },
     });

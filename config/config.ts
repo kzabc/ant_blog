@@ -1,53 +1,22 @@
-import { IConfig, IPlugin } from 'umi-types';
-import defaultSettings from './defaultSettings'; // https://umijs.org/config/
+import { defineConfig } from 'umi';
 
 import webpackPlugin from './plugin.config';
 import slash from 'slash2';
-const { pwa, primaryColor } = defaultSettings;
-const plugins: IPlugin[] = [
-  [
-    'umi-plugin-react',
-    {
-      antd: true,
-      dva: {
-        hmr: true,
-      },
-      locale: {
-        // default false
-        enable: true,
-        // default zh-CN
-        default: 'zh-CN',
-        // default true, when it is true, will use `navigator.language` overwrite default
-        baseNavigator: true,
-      },
-      dynamicImport: {
-        loadingComponent: './components/PageLoading/index',
-        webpackChunkName: true,
-        level: 3,
-      },
-      pwa: pwa
-        ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
-        : false,
-    },
-  ],
-  [
-    'umi-plugin-pro-block',
-    {
-      moveMock: false,
-      moveService: false,
-      modifyRequest: true,
-      autoAddMenu: true,
-    },
-  ],
-];
-export default {
-  plugins,
+export default defineConfig({
   hash: true,
+  antd: {},
+  analytics: false,
+  dva: {
+    hmr: true,
+  },
+  locale: {
+    default: 'zh-CN',
+    antd: true,
+    baseNavigator: true,
+  },
+  dynamicImport: {
+    loading: '@/components/PageLoading/index',
+  },
   targets: {
     ie: 11,
   },
@@ -94,22 +63,14 @@ export default {
                       redirect: '/admin/article/list/release',
                     },
                     {
-                      name: 'draft',
-                      icon: 'smile',
-                      path: '/admin/article/list/draft',
-                      component: './admin/article/draft',
-                    },
-                    {
-                      name: 'examination',
-                      icon: 'smile',
-                      path: '/admin/article/list/examination',
-                      component: './admin/article/examination',
-                    },
-                    {
                       name: 'release',
-                      icon: 'smile',
                       path: '/admin/article/list/release',
                       component: './admin/article/release',
+                    },
+                    {
+                      name: 'draft',
+                      path: '/admin/article/list/draft',
+                      component: './admin/article/draft',
                     },
                     {
                       component: './exception/403',
@@ -253,10 +214,6 @@ export default {
               component: './admin/account/center',
             },
             {
-              path: '/account/settings',
-              component: './admin/account/settings',
-            },
-            {
               component: './exception/403',
             },
             {
@@ -310,9 +267,6 @@ export default {
     },
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
-  theme: {
-    'primary-color': primaryColor,
-  },
   define: {
     API_URL: '/api/',
     USER_TOKEN_STORAGE_KEY: 'APP_USER_TOKEN',
@@ -322,39 +276,38 @@ export default {
     UPLOAD_URL: '/api/attachments/upload',
   },
   ignoreMomentLocale: true,
-  lessLoaderOptions: {
+  lessLoader: {
     javascriptEnabled: true,
   },
-  disableRedirectHoist: true,
-  cssLoaderOptions: {
-    modules: true,
-    getLocalIdent: (
-      context: {
-        resourcePath: string;
-      },
-      _: string,
-      localName: string,
-    ) => {
-      if (
-        context.resourcePath.includes('node_modules') ||
-        context.resourcePath.includes('ant.design.pro.less') ||
-        context.resourcePath.includes('global.less')
-      ) {
+  cssLoader: {
+    modules: {
+      getLocalIdent: (
+        context: {
+          resourcePath: string;
+        },
+        _: string,
+        localName: string,
+      ) => {
+        if (
+          context.resourcePath.includes('node_modules') ||
+          context.resourcePath.includes('ant.design.pro.less') ||
+          context.resourcePath.includes('global.less')
+        ) {
+          return localName;
+        }
+
+        const match = context.resourcePath.match(/src(.*)/);
+
+        if (match && match[1]) {
+          const antdProPath = match[1].replace('.less', '');
+          const arr = slash(antdProPath)
+            .split('/')
+            .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
+            .map((a: string) => a.toLowerCase());
+          return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
+        }
         return localName;
-      }
-
-      const match = context.resourcePath.match(/src(.*)/);
-
-      if (match && match[1]) {
-        const antdProPath = match[1].replace('.less', '');
-        const arr = slash(antdProPath)
-          .split('/')
-          .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
-          .map((a: string) => a.toLowerCase());
-        return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
-      }
-
-      return localName;
+      },
     },
   },
   manifest: {
@@ -363,7 +316,7 @@ export default {
   chainWebpack: webpackPlugin,
   proxy: {
     '/api/': {
-      target: 'http://api.kzabc.com',
+      target: 'http://test.kzabc.com',
       changeOrigin: true,
       // pathRewrite: {
       //    '^/api': '',
@@ -399,16 +352,4 @@ export default {
       },
     ],
   ],
-  copy: [
-    {
-      from: 'node_modules/emoji-assets',
-      to: 'emoji-assets',
-      toType: 'dir',
-    },
-    {
-      from: 'node_modules/font-awesome',
-      to: 'font-awesome',
-      toType: 'dir',
-    },
-  ],
-} as IConfig;
+});

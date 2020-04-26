@@ -1,15 +1,14 @@
 import { GithubOutlined } from '@ant-design/icons';
 import React from 'react';
-import { connect } from 'dva';
-import { formatMessage } from 'umi-plugin-react/locale';
-import { ConnectProps, ConnectState } from '@/models/connect';
+import { connect, ConnectProps, formatMessage } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
-export interface GlobalHeaderRightProps extends ConnectProps {
+export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
   theme?: SiderTheme;
   layout: 'sidemenu' | 'topmenu';
 }

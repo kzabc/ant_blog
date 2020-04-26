@@ -1,13 +1,10 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { Avatar, Menu } from 'antd';
 import { ClickParam } from 'antd/es/menu';
-import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
-import { connect } from 'dva';
-import router from 'umi/router';
+import { connect, history, ConnectProps, FormattedMessage } from 'umi';
 import { parse, stringify } from 'qs';
-import { Authorized } from '@alitajs/antd-plus';
-import { ConnectProps, ConnectState } from '@/models/connect';
+import { ConnectState } from '@/models/connect';
 import { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
@@ -36,14 +33,14 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
       return;
     }
-    router.push(`/account/${key}`);
+    history.push(`/account/${key}`);
   };
 
   onLoginClick = () => {
     const { redirect } = getPageQuery();
     // redirect
     if (window.location.pathname !== '/user/login' && !redirect) {
-      router.push({
+      history.push({
         pathname: '/user/login',
         search: stringify({
           redirect: window.location.href,
@@ -57,7 +54,6 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     let menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         {menu && (
-
           <Menu.Item key="center">
             <UserOutlined />
             <FormattedMessage id="menu.account.center" defaultMessage="account center" />

@@ -1,5 +1,5 @@
 {
-  "name": "ant-design-pro",
+  "name": "kzabc",
   "version": "1.0.0",
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
@@ -7,11 +7,11 @@
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
     "deploy": "npm run site && npm run gh-pages",
-    "fetch:blocks": "pro fetch-blocks && npm run prettier",
+    "fetch:blocks": "pro fetch-blocks --branch=umi@3 && npm run prettier",
     "format-imports": "cross-env import-sort --write '**/*.{js,jsx,ts,tsx}'",
     "gh-pages": "cp CNAME ./dist/ && gh-pages -d dist",
     "i18n-remove": "pro i18n-remove --locale=zh-CN --write",
-    "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
+    "lint": "umi g tmp && npm run lint:js && npm run lint:style && npm run lint:prettier",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
@@ -20,12 +20,13 @@
     "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
     "prettier": "prettier -c --write \"**/*\"",
     "start": "umi dev",
-    "start:no-mock": "cross-env MOCK=none   umi dev ",
+    "start:no-mock": "cross-env MOCK=none umi dev",
     "start:no-ui": "cross-env UMI_UI=none umi dev",
     "test": "umi test",
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components",
-    "ui": "umi ui"
+    "ui": "umi ui",
+    "postinstall": "umi g tmp"
   },
   "husky": {
     "hooks": {
@@ -51,14 +52,16 @@
     "@ant-design/compatible": "^1.0.2",
     "@ant-design/icons": "^4.0.5",
     "@ant-design/pro-layout": "^5.0.9",
-    "@ant-design/pro-table": "^1.0.45",
-    "@antv/data-set": "^0.10.2",
+    "@ant-design/pro-table": "^2.2.3",
     "@types/lodash.debounce": "^4.0.6",
-    "antd": "^4.1.1",
+    "@umijs/plugin-blocks": "^2.0.5",
+    "@umijs/preset-ant-design-pro": "^1.2.1",
+    "@umijs/preset-react": "^1.3.0",
+    "@umijs/preset-ui": "^2.0.9",
+    "antd": "^4.1.5",
     "babel-plugin-prismjs": "^2.0.1",
     "classnames": "^2.2.6",
     "dompurify": "^2.0.8",
-    "dva": "^2.4.1",
     "emoji-assets": "^5.0.2",
     "emoji-toolkit": "^5.0.4",
     "escape-string-regexp": "^2.0.0",
@@ -76,20 +79,14 @@
     "prismjs": "^1.17.1",
     "qs": "^6.9.0",
     "raf": "^3.4.1",
-    "rc-banner-anim": "^2.4.3",
     "react": "^16.8.6",
-    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-fittext": "^1.0.0",
     "react-helmet": "^5.2.1",
     "react-router": "^4.3.1",
-    "redux": "^4.0.1",
     "throttle-debounce": "^2.1.0",
-    "umi": "^2.8.7",
-    "umi-plugin-antd-theme": "^1.0.1",
-    "umi-plugin-pro-block": "^1.3.2",
-    "umi-plugin-react": "^1.9.5",
-    "umi-request": "^1.0.8",
+    "umi": "^3.1.1",
+    "umi-request": "^1.2.19",
     "webpack-theme-color-replacer": "^1.3.4",
     "yt-emoji-picker": "^1.1.1",
     "yt-simplemde-editor": "^3.2.1"
@@ -118,20 +115,14 @@
     "import-sort-parser-babylon": "^6.0.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "jest-puppeteer": "^4.2.0",
     "jsdom-global": "^3.0.2",
     "lint-staged": "^9.0.0",
     "mockjs": "^1.0.1-beta3",
-    "node-fetch": "^2.6.0",
     "prettier": "^1.19.1",
-    "pro-download": "1.0.1",
-    "stylelint": "^12.0.0",
-    "umi-plugin-ga": "^1.1.3",
-    "umi-plugin-pro": "^1.0.2",
-    "umi-types": "^0.5.0"
+    "pro-download": "1.0.1"
   },
   "optionalDependencies": {
-    "puppeteer": "^1.17.0"
+    "puppeteer": "^2.1.1"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -142,5 +133,35 @@
     "src/**/*.less",
     "config/**/*.js*",
     "scripts/**/*.js"
-  ]
+  ],
+  "create-umi": {
+    "ignoreScript": [
+      "docker*",
+      "functions*",
+      "site",
+      "generateMock"
+    ],
+    "ignoreDependencies": [
+      "netlify*",
+      "serverless"
+    ],
+    "ignore": [
+      ".dockerignore",
+      ".git",
+      ".github",
+      ".gitpod.yml",
+      "CODE_OF_CONDUCT.md",
+      "Dockerfile",
+      "Dockerfile.*",
+      "lambda",
+      "LICENSE",
+      "netlify.toml",
+      "README.*.md",
+      "azure-pipelines.yml",
+      "docker",
+      "CNAME",
+      "create-umi"
+    ]
+  },
+  "__npminstall_done": false
 }

@@ -2,11 +2,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
 import React, { PureComponent } from 'react';
 
-import { Dispatch } from 'redux';
+import { Dispatch, connect, Link } from 'umi';
 import { GridContent } from '@ant-design/pro-layout';
-import Link from 'umi/link';
 import { RouteChildrenProps } from 'react-router';
-import { connect } from 'dva';
 import { ModalState } from './model';
 import Projects from './components/Projects';
 import Articles from './components/Articles';
@@ -65,10 +63,7 @@ interface AccountCenterState {
     currentUserLoading: loading.effects['userAndAccountCenter/fetchCurrent'],
   }),
 )
-class AccountCenter extends PureComponent<
-  AccountCenterProps,
-  AccountCenterState
-> {
+class AccountCenter extends PureComponent<AccountCenterProps, AccountCenterState> {
   // static getDerivedStateFromProps(
   //   props: userAndAccountCenterProps,
   //   state: userAndAccountCenterState,

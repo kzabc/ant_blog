@@ -1,12 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
 import React, { PureComponent } from 'react';
-
-import { Dispatch } from 'redux';
 import { GridContent } from '@ant-design/pro-layout';
-import Link from 'umi/link';
 import { RouteChildrenProps } from 'react-router';
-import { connect } from 'dva';
+import { connect, Link, Dispatch } from 'umi';
 import { ModalState } from './model';
 import Projects from './components/Projects';
 import Articles from './components/Articles';
@@ -53,10 +50,7 @@ interface CenterState {
   inputValue?: string;
 }
 
-class Center extends PureComponent<
-  CenterProps,
-  CenterState
-> {
+class Center extends PureComponent<CenterProps, CenterState> {
   // static getDerivedStateFromProps(
   //   props: adminAndaccountAndcenterProps,
   //   state: adminAndaccountAndcenterState,

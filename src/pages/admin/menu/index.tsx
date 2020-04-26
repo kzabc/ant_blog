@@ -10,7 +10,7 @@ import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { IMenu } from '@/models/data';
 import { queryMenu, updateMenu, addMenu, removeMenu } from './service';
-import { queryPermission } from '@/pages/admin/permission/service';
+import { queryPermissionsAll } from '@/services/common';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -151,7 +151,7 @@ const TableList: React.FC<TableListProps> = () => {
             type="primary"
             onClick={async () => {
               handleModalVisible(true);
-              const { data: permission } = await queryPermission();
+              const { data: permission } = await queryPermissionsAll();
               setPermissionState(permission);
             }}
           >

@@ -11,18 +11,16 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useEffect } from 'react';
-import Link from 'umi/link';
-import { Dispatch } from 'redux';
-import { connect } from 'dva';
+import { connect, formatMessage, Link, Dispatch } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { BackTop, Result, Button } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
-import {  getAuthorityFromRouter } from '@/utils/utils';
+import { getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
-import { getToken } from  '@/utils/authority';
+import { getToken } from '@/utils/authority';
+
 const noMatch = (
   <Result
     status="403"
@@ -121,19 +119,18 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const settings = {
     autoHideHeader: true,
     colorWeak: false,
-    contentWidth: "Fixed",
+    contentWidth: 'Fixed',
     fixSiderbar: false,
     fixedHeader: true,
-    iconfontUrl: "",
-    layout: "topmenu",
-    menu: {locale: true},
-    navTheme: "light",
+    iconfontUrl: '',
+    layout: 'topmenu',
+    menu: { locale: true },
+    navTheme: 'light',
     primaryColor: '#13C2C2',
     pwa: false,
-    title: "呼ྂ吸ྂ的blog"
-  }
+    title: '呼ྂ吸ྂ的blog',
+  };
   useEffect(() => {
-
     let token = getToken();
     if (dispatch && token[0]) {
       dispatch({
@@ -201,7 +198,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       <Authorized authority={authorized!.authority} noMatch={noMatch}>
         {children}
       </Authorized>
-      <BackTop  />
+      <BackTop />
     </ProLayout>
   );
 };

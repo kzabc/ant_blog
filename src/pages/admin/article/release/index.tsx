@@ -1,19 +1,17 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Button, Divider, Dropdown, Menu, message, Tag, Avatar } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Tag, Space } from 'antd';
 import React, { useRef } from 'react';
 import { Link } from 'umi';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { GridContent } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data.d';
-import { queryRule,removeRule } from './service';
-import styles from "@/components/GlobalHeader/index.less";
-
+import { queryArticle, removeArticle, removeArticles } from '../services/service';
+import { IArticle, ITag } from '@/models/data';
 
 interface TableListProps extends FormComponentProps {}
-
 
 /**
  *  删除节点
@@ -23,7 +21,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeRule({
+    await removeArticle({
       key: selectedRows.map(row => row.id),
     });
     hide();
@@ -35,16 +33,38 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
     return false;
   }
 };
+
+/**
+ *  删除节点
+ * @param selectedRows
+ */
+
+const handleSelectedRemove = async (selectedRows: ITag[]) => {
+  const hide = message.loading('正在删除');
+  if (!selectedRows) return true;
+  try {
+    await removeArticles({
+      id: selectedRows.map(row => row.id),
+    });
+    hide();
+    message.success('删除成功，即将刷新');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('删除失败，请重试');
+    return false;
+  }
+};
+
 const operation = record => (
-  <Menu onClick={({ key }) => this.operationClick(key, record)}>
+  <Menu onClick={({ key }) => handleRemove(key, record)}>
     <Menu.Item key="edit">编辑</Menu.Item>
     <Menu.Item key="delete">删除</Menu.Item>
   </Menu>
 );
-const TableList: React.FC<TableListProps> = () => {
-
+const TableList: React.FC<IArticle> = () => {
   const actionRef = useRef<ActionType>();
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<IArticle>[] = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -53,14 +73,34 @@ const TableList: React.FC<TableListProps> = () => {
     },
     {
       title: '作者',
-      dataIndex: 'author',
-      render: text => {
-        return  <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={text.avatar} alt="avatar" />
-          <span className={styles.name}>{text.name}</span>
-        </span>
-      },
+      dataIndex: 'author.avatar',
+      valueType: 'avatar',
+      width: 150,
+      render: dom => (
+        <Space>
+          <span>{dom}</span>
+          <a href="https://github.com/chenshuai2144" target="_blank" rel="noopener noreferrer">
+            zaaa
+          </a>
+        </Space>
+      ),
     },
+    {
+      title: '头像',
+      dataIndex: 'author.avatar',
+      key: 'avatar',
+      valueType: 'avatar',
+      width: 150,
+      render: dom => (
+        <Space>
+          <span>{dom}</span>
+          <a href="https://github.com/chenshuai2144" target="_blank" rel="noopener noreferrer">
+            chenshuai2144
+          </a>
+        </Space>
+      ),
+    },
+
     {
       title: '分类',
       dataIndex: 'categorys',
@@ -72,18 +112,18 @@ const TableList: React.FC<TableListProps> = () => {
           </Tag>
         ));
       },
-
     },
     {
       title: '描述',
       ellipsis: true,
       width: 400,
       hideInSearch: true,
-      dataIndex: 'meta_description',
+      dataIndex: 'content',
+      renderText: val => `${val.combine_markdown.substring(0, 300)}`,
     },
     {
       title: '阅读次数',
-      dataIndex: 'view_count',
+      dataIndex: 'friendly_views_count',
       hideInSearch: true,
       renderText: (val: string) => `${val} 次`,
     },
@@ -100,7 +140,7 @@ const TableList: React.FC<TableListProps> = () => {
       render: (_, record) => (
         <>
           <a onclick={() => this.handleUpdateModalVisible(true, record)}>查看</a>
-          <Divider type="vertical"/>
+          <Divider type="vertical" />
           <Dropdown overlay={operation(record)}>
             <a className="ant-dropdown-link" href="#">
               更多
@@ -113,16 +153,16 @@ const TableList: React.FC<TableListProps> = () => {
   ];
   return (
     <GridContent>
-      <ProTable<TableListItem>
+      <ProTable<IArticle>
         headerTitle="查询表格"
         actionRef={actionRef}
         params={{ include: 'author,categorys' }}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
           <Link to="/admin/article/create">
-          <Button icon={<PlusOutlined />} type="primary">
-            新建
-          </Button>
+            <Button icon={<PlusOutlined />} type="primary">
+              新建
+            </Button>
           </Link>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
@@ -130,7 +170,7 @@ const TableList: React.FC<TableListProps> = () => {
                 <Menu
                   onClick={async e => {
                     if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
+                      await handleSelectedRemove(selectedRows);
                       action.reload();
                     }
                   }}
@@ -146,15 +186,7 @@ const TableList: React.FC<TableListProps> = () => {
             </Dropdown>
           ),
         ]}
-        tableAlertRender={(selectedRowKeys, selectedRows) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>
-              阅读次数总计 {selectedRows.reduce((pre, item) => pre + item.view_count, 0)} 次
-            </span>
-          </div>
-        )}
-        request={params => queryRule(params)}
+        request={params => queryArticle(params)}
         columns={columns}
         rowSelection={{}}
       />

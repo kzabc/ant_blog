@@ -1,13 +1,9 @@
 import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined } from '@ant-design/icons';
 import { Alert, Checkbox } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
-
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { Dispatch, AnyAction } from 'redux';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
-import Link from 'umi/link';
-import { connect } from 'dva';
+import { connect, Link, Dispatch, formatMessage } from 'umi';
 import { StateType } from '@/models/login';
 import LoginComponents from './components/Login';
 import styles from './style.less';
@@ -17,7 +13,7 @@ import { ConnectState } from '@/models/connect';
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
 
 interface LoginProps {
-  dispatch: Dispatch<AnyAction>;
+  dispatch: Dispatch;
   userLogin: StateType;
   submitting: boolean;
 }
@@ -179,22 +175,20 @@ class Login extends Component<LoginProps, LoginState> {
           </Tab>
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              <FormattedMessage id="user-login.login.remember-me" />
+              {formatMessage({ id: 'user-login.login.remember-me' })}
             </Checkbox>
             <a style={{ float: 'right' }} href="">
-              <FormattedMessage id="user-login.login.forgot-password" />
+              {formatMessage({ id: 'user-login.login.forgot-password' })}
             </a>
           </div>
-          <Submit loading={submitting}>
-            <FormattedMessage id="user-login.login.login" />
-          </Submit>
+          <Submit loading={submitting}>{formatMessage({ id: 'user-login.login.login' })}</Submit>
           <div className={styles.other}>
-            <FormattedMessage id="user-login.login.sign-in-with" />
+            {formatMessage({ id: 'user-login.login.sign-in-with' })}
             <AlipayCircleOutlined className={styles.icon} />
             <TaobaoCircleOutlined className={styles.icon} />
             <WeiboCircleOutlined className={styles.icon} />
             <Link className={styles.register} to="/user/register">
-              <FormattedMessage id="user-login.login.signup" />
+              {formatMessage({ id: 'user-login.login.signup' })}
             </Link>
           </div>
         </LoginComponents>
